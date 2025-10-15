@@ -1,0 +1,48 @@
+# Light Theme for ChalkBox
+# A lighter, softer color scheme for terminal UIs
+
+[colors]
+primary = "blue"
+secondary = "cyan"
+success = "green"
+warning = "yellow"
+error = "red"
+info = "blue"
+muted = "dim white"
+accent = "magenta"
+background = "default"
+text = "black"
+debug = "dim cyan"
+critical = "bright_red"
+
+[glyphs]
+success = "✓"
+error = "✖"
+warning = "⚠"
+info = "ℹ"
+debug = "▪"
+critical = "‼"
+arrow = "→"
+bullet = "•"
+check = "✓"
+cross = "✖"
+spinner = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+pending = "○"
+running = "◔"
+complete = "●"
+failed = "✖"
+skipped = "⊘"
+
+[spacing]
+xs = 0
+sm = 1
+default = 1
+md = 2
+lg = 3
+xl = 4
+
+[borders]
+style = "rounded"
+panel = "rounded"
+table = "rounded"
+section = "rounded"

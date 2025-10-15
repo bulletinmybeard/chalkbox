@@ -1,0 +1,48 @@
+# Dark Theme for ChalkBox
+# A darker, more muted color scheme for terminal UIs
+
+[colors]
+primary = "bright_blue"
+secondary = "blue"
+success = "bright_green"
+warning = "bright_yellow"
+error = "bright_red"
+info = "bright_cyan"
+muted = "bright_black"
+accent = "magenta"
+background = "default"
+text = "white"
+debug = "dim bright_cyan"
+critical = "bold bright_red"
+
+[glyphs]
+success = "✓"
+error = "✖"
+warning = "⚠"
+info = "ℹ"
+debug = "▪"
+critical = "‼"
+arrow = "→"
+bullet = "•"
+check = "✓"
+cross = "✖"
+spinner = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+pending = "○"
+running = "◔"
+complete = "●"
+failed = "✖"
+skipped = "⊘"
+
+[spacing]
+xs = 0
+sm = 1
+default = 1
+md = 2
+lg = 3
+xl = 4
+
+[borders]
+style = "heavy"
+panel = "heavy"
+table = "heavy"
+section = "double"
