@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/bulletinmybeard/chalkbox/main/docs/images/chalkbox-logo.png" alt="ChalkBox Logo">
+  <img src="https://raw.githubusercontent.com/bulletinmybeard/chalkbox/refs/heads/master/docs/images/chalkbox-logo.png" alt="ChalkBox Logo">
 </p>
 
 <p align="center">
@@ -18,7 +18,7 @@
 
 A batteries-included CLI UI kit built on top of [Rich](https://github.com/Textualize/rich). ChalkBox provides consistent, themed, and composable components for building beautiful command-line interfaces with fail-safe defaults.
 
-![ChalkBox Demo](https://raw.githubusercontent.com/bulletinmybeard/chalkbox/main/docs/images/hero-demo.gif)
+![ChalkBox Demo](https://raw.githubusercontent.com/bulletinmybeard/chalkbox/refs/heads/master/docs/images/hero-demo.gif)
 
 ## Why ChalkBox?
 
