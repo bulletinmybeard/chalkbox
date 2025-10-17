@@ -102,6 +102,9 @@ console.print(table)
 | **MultiPanel**   | Complex layouts with grids and dashboards          |
 | **ColumnLayout** | Responsive column layouts with equal/custom sizing |
 | **Divider**      | Section dividers with multiple styles              |
+| **Align**        | Content alignment (horizontal & vertical)          |
+| **Padding**      | Theme-aware spacing wrapper with multiple patterns |
+| **Bar**          | Horizontal bar charts and metrics visualization    |
 
 ### Interactive Input
 

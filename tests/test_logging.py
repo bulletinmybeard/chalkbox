@@ -95,7 +95,8 @@ class TestSetupLogging:
 class TestGetLogger:
     """Tests for get_logger function."""
 
-    def setup_method(self):
+    @staticmethod
+    def setup_method():
         """Clear handlers before each test."""
         logging.getLogger().handlers.clear()
 

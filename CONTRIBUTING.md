@@ -90,7 +90,7 @@ poetry run ruff check chalkbox/ tests/
 poetry run ruff check --fix chalkbox/ tests/
 
 # Format Markdown files
-poetry run mdformat *.md docs/ demos/
+poetry run mdformat docs/ demos/
 
 # Type checking
 poetry run mypy chalkbox/
@@ -107,11 +107,11 @@ poetry run bandit -r chalkbox/
    ```bash
    git checkout -b feature/my-improvement
    ```
-2. **Make your changes** following coding standards (see below)
-3. **Add tests** for new functionality or bug fixes
-4. **Run the test suite** and ensure all tests pass
-5. **Check code quality** with Ruff, MyPy, Bandit, and mdformat
-6. **Update documentation** if needed (README, docstrings, examples)
+1. **Make your changes** following coding standards (see below)
+1. **Add tests** for new functionality or bug fixes
+1. **Run the test suite** and ensure all tests pass
+1. **Check code quality** with Ruff, MyPy, Bandit, and mdformat
+1. **Update documentation** if needed (README, docstrings, examples)
 
 ### Coding Standards
 
@@ -206,13 +206,13 @@ Types:
    ```bash
    git push origin feature/my-improvement
    ```
-2. **Open a Pull Request** on GitHub with:
+1. **Open a Pull Request** on GitHub with:
    - Clear title describing the change
    - Description of what you changed and why
    - Reference to any related issues (`Fixes #123`)
    - Screenshots for UI changes (if applicable)
-3. **Respond to feedback** - Maintainers may request changes
-4. **Keep your PR updated** - Rebase if needed to resolve conflicts
+1. **Respond to feedback** - Maintainers may request changes
+1. **Keep your PR updated** - Rebase if needed to resolve conflicts
 
 ## Proposing New Components
 
@@ -223,9 +223,9 @@ If you want to add a new component:
    - Example usage code
    - Explanation of why it belongs in ChalkBox (vs user-defined)
    - How it fits with existing components
-2. **Wait for feedback** before implementing
-3. **Discuss API design** with maintainers
-4. **Get approval** before submitting PR
+1. **Wait for feedback** before implementing
+1. **Discuss API design** with maintainers
+1. **Get approval** before submitting PR
 
 ## Reporting Issues
 
@@ -381,4 +381,4 @@ print(f"Is terminal: {console.is_terminal}")
 print(f"Console size: {console.size}")
 ```
 
-Thank you for contributing to ChalkBox! \w
+Thank you for contributing to ChalkBox! \\w
