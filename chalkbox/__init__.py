@@ -1,6 +1,8 @@
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 from .components.alert import Alert
+from .components.align import Align
+from .components.bar import Bar
 from .components.code import CodeBlock
 from .components.columns import ColumnLayout
 from .components.divider import Divider
@@ -8,6 +10,7 @@ from .components.json_view import JsonView
 from .components.kv import KeyValue
 from .components.layout import MultiPanel
 from .components.markdown import Markdown
+from .components.padding import Padding
 from .components.progress import Progress
 from .components.prompt import Confirm, FloatInput, Input, IntInput, NumberInput, Select
 from .components.section import Section
@@ -23,7 +26,9 @@ from .live.wrapper import LiveComponent, LiveLayout, LiveTable
 from .logging.bridge import get_logger, setup_logging
 
 __all__ = [
+    "Align",
     "Alert",
+    "Bar",
     "CodeBlock",
     "ColumnLayout",
     "Confirm",
@@ -42,6 +47,7 @@ __all__ = [
     "Markdown",
     "MultiPanel",
     "NumberInput",
+    "Padding",
     "Progress",
     "Section",
     "Select",

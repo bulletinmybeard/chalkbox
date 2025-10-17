@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-10-18
+
+### Added
+
+- **Bar Component**: Horizontal bar visualization for metrics and progress tracking
+  - Factory methods: `percentage()`, `fraction()`, `from_ratio()`, `indeterminate()`
+  - Severity-based coloring (success/warning/error/info/critical)
+  - Customizable width and styles
+  - Perfect for displaying API quotas, system resources, task progress, and ratings
+- **Align Component**: Content alignment wrapper with defaults
+  - Horizontal alignment: left, center, right
+  - Vertical alignment: top, middle, bottom
+  - Factory methods: `left()`, `center()`, `right()`, `middle()`, `top()`, `bottom()`
+  - Width and height control for positioning
+  - Ideal for headers, footers, menus, and emphasized content
+- **Padding Component**: Theme-aware spacing wrapper with multiple patterns
+  - Theme-based padding levels: `xs()`, `small()`, `medium()`, `large()`, `xl()`
+  - Pattern methods: `symmetric()`, `vertical()`, `horizontal()`, `custom()`
+  - Integrates with ChalkBox theme spacing tokens
+  - validation for negative padding values
+  - Perfect for creating visual hierarchy and card-like layouts
+- **Component Demos**: Added comprehensive demos for all three new components
+  - `demos/components/bar.py` - Bar charts, metrics, progress tracking
+  - `demos/components/align.py` - Content alignment patterns
+  - `demos/components/padding.py` - Spacing and layout examples
+- **Tests**: Added 61 comprehensive tests for new components
+  - `tests/test_bar.py` - 16 tests covering all Bar functionality
+  - `tests/test_align.py` - 19 tests for alignment features
+  - `tests/test_padding.py` - 26 tests including theme integration
+
+### Changed
+
+- **Documentation**: Updated README.md with new components
+
 ## [1.0.0] - 2025-10-13
 
 ### Added
