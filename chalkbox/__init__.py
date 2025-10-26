@@ -1,4 +1,4 @@
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 from .components.alert import Alert
 from .components.align import Align
@@ -16,6 +16,7 @@ from .components.prompt import Confirm, FloatInput, Input, IntInput, NumberInput
 from .components.section import Section
 from .components.spinner import Spinner
 from .components.status import Status, status
+from .components.status_card import StatusCard
 from .components.stepper import Stepper
 from .components.table import Table
 from .components.tree import Tree
@@ -53,6 +54,7 @@ __all__ = [
     "Select",
     "Spinner",
     "Status",
+    "StatusCard",
     "Stepper",
     "Table",
     "Theme",

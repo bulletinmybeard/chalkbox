@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-10-26
+
+### Added
+
+- **StatusCard Component**: Generic status card component for rich status displays
+  - Combines Section, KeyValue, Bar, and Alert components
+  - Explicit severity via 4-tuple bars: `(label, value, max, severity)`
+  - Auto-calculated severity via 3-tuple bars + `bar_thresholds` parameter
+  - Factory method: `from_health_check()` for normalizing health check data
+  - Status levels: healthy (✓), warning (⚠), error (✖), unknown (?)
+  - Generic design - full control all severity and styling levels
+  - Perfect for dashboards, monitoring tools, and health checks
+- **Type Checking Support**: Added `py.typed` marker file
+  - Enables proper type checking in projects consuming ChalkBox
+  - Fixes mypy "missing library stubs or py.typed marker" errors
+  - Full IDE type hint support (VSCode, PyCharm, etc.)
+- **Component Demos**: Added demo script for StatusCard examples
+  - `demos/components/status_card.py` - StatusCard usage patterns with both bar formats
+- **Tests**: Added many tests for the StatusCard component
+  - `tests/test_status_card.py` - Covers StatusCard functionality including both bar formats
+
+### Changed
+
+- **Dependencies**: Updated `psutil` from `^5.9.0` to `^7.1.2`
+- **Documentation**: Updated project documentation with StatusCard usage examples
+- **Package Metadata**: Added `chalkbox/py.typed` to distribution includes in `pyproject.toml`
+
 ## [1.1.0] - 2025-10-18
 
 ### Added

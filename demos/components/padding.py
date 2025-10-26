@@ -1,6 +1,6 @@
 import time
 
-from chalkbox import Align, Alert, Divider, KeyValue, Padding, Section, Table, get_console
+from chalkbox import Alert, Align, Divider, KeyValue, Padding, Section, Table, get_console
 
 console = get_console()
 

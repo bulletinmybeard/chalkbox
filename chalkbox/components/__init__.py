@@ -14,6 +14,7 @@ from .prompt import Confirm, FloatInput, Input, IntInput, NumberInput, Select
 from .section import Section
 from .spinner import Spinner
 from .status import Status, status
+from .status_card import StatusCard
 from .stepper import Stepper
 from .table import Table
 from .tree import Tree
@@ -40,6 +41,7 @@ __all__ = [
     "Select",
     "Spinner",
     "Status",
+    "StatusCard",
     "Stepper",
     "Table",
     "Tree",
