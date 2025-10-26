@@ -56,9 +56,7 @@ class TestStatusCard:
         assert card._get_bar_severity("cpu", 95.0, 100.0) == "success"
 
         thresholds = {"cpu": (70.0, 90.0)}
-        card_with_thresholds = StatusCard(
-            title="Test", status="healthy", bar_thresholds=thresholds
-        )
+        card_with_thresholds = StatusCard(title="Test", status="healthy", bar_thresholds=thresholds)
 
         assert card_with_thresholds._get_bar_severity("cpu", 50.0, 100.0) == "success"
         assert card_with_thresholds._get_bar_severity("cpu", 75.0, 100.0) == "warning"
@@ -128,7 +126,7 @@ class TestStatusCard:
     def test_mixed_bar_formats(self):
         """Test mixing 3-tuple and 4-tuple bar formats."""
         bars = [
-            ("CPU", 75.0, 100.0),              # 3-tuple, severity calculated from thresholds
+            ("CPU", 75.0, 100.0),  # 3-tuple, severity calculated from thresholds
             ("Memory", 85.0, 100.0, "error"),  # 4-tuple, explicit severity
         ]
         thresholds = {"CPU": (70.0, 90.0)}
