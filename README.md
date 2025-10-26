@@ -75,16 +75,17 @@ console.print(table)
 
 ### Display & Content
 
-| Component     | Description                                                         |
-| :------------ | :------------------------------------------------------------------ |
-| **Alert**     | 6-level severity alerts (debug/info/success/warning/error/critical) |
-| **Table**     | Auto-sizing tables with severity-based row styling                  |
-| **Section**   | Organized content containers with optional subtitles                |
-| **CodeBlock** | Syntax-highlighted code display with file reading support           |
-| **JsonView**  | JSON data visualization with pretty printing                        |
-| **Markdown**  | Markdown rendering component                                        |
-| **KeyValue**  | Key-value displays with automatic secret masking                    |
-| **Tree**      | Hierarchical data visualization with file system support            |
+| Component      | Description                                                         |
+| :------------- | :------------------------------------------------------------------ |
+| **Alert**      | 6-level severity alerts (debug/info/success/warning/error/critical) |
+| **StatusCard** | Composite status cards combining metrics, bars, and alerts          |
+| **Table**      | Auto-sizing tables with severity-based row styling                  |
+| **Section**    | Organized content containers with optional subtitles                |
+| **CodeBlock**  | Syntax-highlighted code display with file reading support           |
+| **JsonView**   | JSON data visualization with pretty printing                        |
+| **Markdown**   | Markdown rendering component                                        |
+| **KeyValue**   | Key-value displays with automatic secret masking                    |
+| **Tree**       | Hierarchical data visualization with file system support            |
 
 ### Progress & Status
 
@@ -208,6 +209,43 @@ kv.add("API Key", "sk-1234567890abcdef")        # Automatically masked as "sk***
 kv.add("Database Password", "super_secret_123") # Automatically masked
 
 console.print(kv)
+```
+
+### StatusCard - Composite status displays
+
+```python
+from chalkbox import StatusCard, Alert, get_console
+
+console = get_console()
+
+# StatusCard combines metrics, bars, and alerts for rich status displays
+card = StatusCard(
+    title="API Gateway",
+    status="warning",
+    subtitle="gateway-prod-01",
+    metrics={"Uptime": "15d 3h", "Requests/sec": "1,234", "Error Rate": "0.8%"},
+    bars=[
+        ("Throughput", 85.0, 100.0, "warning"),  # Explicit severity (4-tuple)
+        ("Response Time", 145.0, 200.0, "success"),
+    ],
+    alert=Alert.warning("Rate limit approaching", details="85% of quota used")
+)
+
+console.print(card)
+
+# Or use auto-calculated severity with thresholds
+thresholds = {"CPU": (70.0, 90.0), "Memory": (80.0, 95.0)}  # (warning%, error%)
+card = StatusCard(
+    title="Server Monitor",
+    status="healthy",
+    bars=[
+        ("CPU", 45.0, 100.0),     # 3-tuple: severity auto-calculated
+        ("Memory", 12.8, 16.0),
+    ],
+    bar_thresholds=thresholds
+)
+
+console.print(card)
 ```
 
 ### Stepper - Workflow tracking with mixed states
