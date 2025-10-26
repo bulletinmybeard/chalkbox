@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "chalkbox"
-version = "1.1.0"
+version = "1.2.0"
 description = "A batteries-included CLI UI kit on top of Rich"
 authors = [
     "Robin Schulz <bulletinmybeard@gmail.com>"
 ]
 readme = "README.md"
 packages = [{include = "chalkbox"}]
-include = ["CHANGELOG.md"]
+include = ["CHANGELOG.md", "chalkbox/py.typed"]
 license = "MIT"
 homepage = "https://github.com/bulletinmybeard/chalkbox"
 repository = "https://github.com/bulletinmybeard/chalkbox"
@@ -32,7 +32,7 @@ classifiers = [
 python = "^3.12"
 rich = "^14.2.0"
 toml = "^0.10.2"
-psutil = "^5.9.0"
+psutil = "^7.1.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
