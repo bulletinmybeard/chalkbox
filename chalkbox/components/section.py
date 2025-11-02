@@ -63,7 +63,7 @@ class Section:
         # Determine padding
         padding: int | tuple[int, int]
         if self.padding is None:
-            padding = (self.theme.spacing["sm"], self.theme.spacing["default"])
+            padding = (self.theme.spacing.sm, self.theme.spacing.default)
         elif isinstance(self.padding, int):
             padding = self.padding
         else:

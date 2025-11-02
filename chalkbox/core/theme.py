@@ -1,113 +1,106 @@
-from dataclasses import dataclass, field
 import os
 from pathlib import Path
 from typing import Any
 
+from pydantic import BaseModel, ConfigDict, Field
 import toml
 
 
-@dataclass
-class Theme:
+class ColorsConfig(BaseModel):
+    """Color configuration for theme."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    primary: str = "cyan"
+    secondary: str = "blue"
+    success: str = "green"
+    warning: str = "yellow"
+    error: str = "red"
+    info: str = "blue"
+    muted: str = "dim white"
+    accent: str = "bright_cyan"
+    background: str = "default"
+    text: str = "default"
+    debug: str = "dim cyan"
+    critical: str = "bright_red"
+
+
+class SpacingConfig(BaseModel):
+    """Spacing configuration for theme."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    xs: int = 0
+    sm: int = 1
+    default: int = 1
+    md: int = 2
+    lg: int = 3
+    xl: int = 4
+
+
+class GlyphsConfig(BaseModel):
+    """Glyph configuration for theme."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    success: str = "✓"
+    error: str = "✖"
+    warning: str = "⚠"
+    info: str = "i"
+    debug: str = "▪"
+    critical: str = "‼"
+    arrow: str = "→"
+    bullet: str = "•"
+    check: str = "✓"
+    cross: str = "✖"
+    spinner: str = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+    pending: str = "○"
+    running: str = "◔"
+    complete: str = "●"
+    failed: str = "✖"
+    skipped: str = "⊘"
+
+
+class BordersConfig(BaseModel):
+    """Border configuration for theme."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    style: str = "rounded"
+    panel: str = "rounded"
+    table: str = "rounded"
+    section: str = "rounded"
+
+
+class Theme(BaseModel):
     """Theme configuration with design tokens."""
 
-    colors: dict[str, str] = field(
-        default_factory=lambda: {
-            "primary": "cyan",
-            "secondary": "blue",
-            "success": "green",
-            "warning": "yellow",
-            "error": "red",
-            "info": "blue",
-            "muted": "dim white",
-            "accent": "bright_cyan",
-            "background": "default",
-            "text": "default",
-            "debug": "dim cyan",
-            "critical": "bright_red",
-        }
-    )
+    model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
-    spacing: dict[str, int] = field(
-        default_factory=lambda: {
-            "xs": 0,
-            "sm": 1,
-            "default": 1,
-            "md": 2,
-            "lg": 3,
-            "xl": 4,
-        }
-    )
-
-    glyphs: dict[str, str] = field(
-        default_factory=lambda: {
-            "success": "✓",
-            "error": "✖",
-            "warning": "⚠",
-            "info": "i",
-            "debug": "▪",
-            "critical": "‼",
-            "arrow": "→",
-            "bullet": "•",
-            "check": "✓",
-            "cross": "✖",
-            "spinner": "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏",
-            "pending": "○",
-            "running": "◔",
-            "complete": "●",
-            "failed": "✖",
-            "skipped": "⊘",
-        }
-    )
-
-    borders: dict[str, str] = field(
-        default_factory=lambda: {
-            "style": "rounded",
-            "panel": "rounded",
-            "table": "rounded",
-            "section": "rounded",
-        }
-    )
-
-    def get(self, path: str, default: Any = None) -> Any:
-        """Get a theme value by dot-notation path."""
-        parts = path.split(".")
-        current: Any = self.__dict__
-
-        for part in parts:
-            if isinstance(current, dict):
-                current = current.get(part)
-            else:
-                current = getattr(current, part, None)
-
-            if current is None:
-                return default
-
-        return current
-
-    def update(self, updates: dict[str, Any]) -> None:
-        """Update theme values from a dictionary."""
-        for path, value in updates.items():
-            parts = path.split(".")
-
-            if len(parts) == 2:
-                category, key = parts
-                if hasattr(self, category):
-                    attr = getattr(self, category)
-                    if isinstance(attr, dict):
-                        attr[key] = value
+    colors: ColorsConfig = Field(default_factory=lambda: ColorsConfig())
+    spacing: SpacingConfig = Field(default_factory=lambda: SpacingConfig())
+    glyphs: GlyphsConfig = Field(default_factory=lambda: GlyphsConfig())
+    borders: BordersConfig = Field(default_factory=lambda: BordersConfig())
 
     @classmethod
     def from_file(cls, path: Path) -> "Theme":
         """Load theme from a TOML file."""
-        theme = cls()
+        if not path.exists():
+            return cls()
 
-        if path.exists():
-            data = toml.load(path)
-            for category in ["colors", "spacing", "glyphs", "borders"]:
-                if category in data:
-                    setattr(theme, category, data[category])
+        data = toml.load(path)
 
-        return theme
+        theme_data: dict[str, Any] = {}
+        if "colors" in data:
+            theme_data["colors"] = ColorsConfig(**data["colors"])
+        if "spacing" in data:
+            theme_data["spacing"] = SpacingConfig(**data["spacing"])
+        if "glyphs" in data:
+            theme_data["glyphs"] = GlyphsConfig(**data["glyphs"])
+        if "borders" in data:
+            theme_data["borders"] = BordersConfig(**data["borders"])
+
+        return cls(**theme_data)
 
     @classmethod
     def from_env(cls) -> "Theme":
@@ -115,27 +108,54 @@ class Theme:
         theme = cls()
 
         prefix = "CHALKBOX_THEME_"
+        updates: dict[str, dict[str, Any]] = {
+            "colors": {},
+            "spacing": {},
+            "glyphs": {},
+            "borders": {},
+        }
+
         for key, value in os.environ.items():
             if key.startswith(prefix):
                 path = key[len(prefix) :].lower().replace("_", ".")
-                theme.update({path: value})
+                parts = path.split(".")
+
+                if len(parts) == 2:
+                    category, field_name = parts
+                    if category in updates:
+                        if category == "spacing":
+                            try:
+                                updates[category][field_name] = int(value)
+                            except ValueError:
+                                updates[category][field_name] = value
+                        else:
+                            updates[category][field_name] = value
+
+        if updates["colors"]:
+            theme.colors = ColorsConfig(**{**theme.colors.model_dump(), **updates["colors"]})
+        if updates["spacing"]:
+            theme.spacing = SpacingConfig(**{**theme.spacing.model_dump(), **updates["spacing"]})
+        if updates["glyphs"]:
+            theme.glyphs = GlyphsConfig(**{**theme.glyphs.model_dump(), **updates["glyphs"]})
+        if updates["borders"]:
+            theme.borders = BordersConfig(**{**theme.borders.model_dump(), **updates["borders"]})
 
         return theme
 
     def get_style(self, level: str = "default") -> str:
         """Get Rich style string for a severity level."""
         color_map = {
-            "debug": self.colors["debug"],
-            "info": self.colors["info"],
-            "success": self.colors["success"],
-            "warning": self.colors["warning"],
-            "error": self.colors["error"],
-            "critical": self.colors["critical"],
-            "default": self.colors["text"],
-            "muted": self.colors["muted"],
-            "primary": self.colors["primary"],
+            "debug": self.colors.debug,
+            "info": self.colors.info,
+            "success": self.colors.success,
+            "warning": self.colors.warning,
+            "error": self.colors.error,
+            "critical": self.colors.critical,
+            "default": self.colors.text,
+            "muted": self.colors.muted,
+            "primary": self.colors.primary,
         }
-        return color_map.get(level, self.colors["text"])
+        return color_map.get(level, self.colors.text)
 
 
 _theme: Theme | None = None
@@ -154,10 +174,18 @@ def get_theme() -> Theme:
 
         # Apply environment overrides
         env_theme = Theme.from_env()
-        _theme.colors.update(env_theme.colors)
-        _theme.spacing.update(env_theme.spacing)
-        _theme.glyphs.update(env_theme.glyphs)
-        _theme.borders.update(env_theme.borders)
+        _theme.colors = ColorsConfig(
+            **{**_theme.colors.model_dump(), **env_theme.colors.model_dump()}
+        )
+        _theme.spacing = SpacingConfig(
+            **{**_theme.spacing.model_dump(), **env_theme.spacing.model_dump()}
+        )
+        _theme.glyphs = GlyphsConfig(
+            **{**_theme.glyphs.model_dump(), **env_theme.glyphs.model_dump()}
+        )
+        _theme.borders = BordersConfig(
+            **{**_theme.borders.model_dump(), **env_theme.borders.model_dump()}
+        )
 
     return _theme
 
@@ -171,4 +199,27 @@ def set_theme(theme: Theme | None = None, **kwargs: Any) -> None:
     elif kwargs:
         if _theme is None:
             _theme = Theme()
-        _theme.update(kwargs)
+
+        # Parse kwargs for nested updates (e.g., colors_primary -> colors.primary)
+        updates: dict[str, dict[str, Any]] = {
+            "colors": {},
+            "spacing": {},
+            "glyphs": {},
+            "borders": {},
+        }
+
+        for key, value in kwargs.items():
+            parts = key.split("_", 1)
+            if len(parts) == 2:
+                category, field_name = parts
+                if category in updates:
+                    updates[category][field_name] = value
+
+        if updates["colors"]:
+            _theme.colors = ColorsConfig(**{**_theme.colors.model_dump(), **updates["colors"]})
+        if updates["spacing"]:
+            _theme.spacing = SpacingConfig(**{**_theme.spacing.model_dump(), **updates["spacing"]})
+        if updates["glyphs"]:
+            _theme.glyphs = GlyphsConfig(**{**_theme.glyphs.model_dump(), **updates["glyphs"]})
+        if updates["borders"]:
+            _theme.borders = BordersConfig(**{**_theme.borders.model_dump(), **updates["borders"]})

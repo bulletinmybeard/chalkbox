@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-11-02
+
+### Added
+
+- **Pydantic2**: Migrated theme system from dataclass to Pydantic v2
+  - Runtime validation of all theme configuration values
+  - Type hints for theme attributes
+  - Automatic type validation for colors, spacing, glyphs, and borders
+  - Four nested Pydantic models: `ColorsConfig`, `SpacingConfig`, `GlyphsConfig`, `BordersConfig`
+  - Strict validation (`extra="forbid"`) prevents typos and undocumented theme fields
+  - Clear validation error messages for invalid theme configurations
+- **Dependencies**: Added `pydantic` (v2.12.3) and `pydantic-settings` (v2.11.0)
+
+### Changed
+
+- **Theme Access Pattern**: Theme values now accessed via direct attributes
+  - **Before**: `theme.get("colors.primary")` or `theme.colors["primary"]`
+  - **After**: `theme.colors.primary` (dot notation throughout)
+  - Use `getattr(theme.colors, key, default)` for dynamic attribute access
+- **Theme Updates**: `set_theme()` now uses underscore notation for kwargs
+  - **Before**: `set_theme(None, **{"colors.primary": "blue"})`
+  - **After**: `set_theme(None, colors_primary="blue")`
+- **All Components**: Updated to use direct attribute access for theme values
+  - `padding.py`, `bar.py`, `alert.py`, `spinner.py`, `stepper.py`, `section.py`
+
+### Removed
+
+- **Breaking**: Removed `theme.get(path, default)` method
+  - Use direct attribute access: `theme.colors.primary`
+  - Use `getattr()` for dynamic access: `getattr(theme.colors, key, default)`
+- **Breaking**: Removed `theme.update(updates)` method
+  - Use `set_theme()` with kwargs instead: `set_theme(None, colors_primary="blue")`
+- **Breaking**: Dictionary-style theme access no longer supported
+  - `theme.colors["primary"]` → `theme.colors.primary`
+  - `theme.spacing["md"]` → `theme.spacing.md`
+
+### Migration Guide
+
+If you're upgrading from v1.x to v2.0:
+
+1. **Update theme access**:
+
+   ```python
+   # Old (v1.x)
+   color = theme.get("colors.primary")
+   spacing = theme.spacing["md"]
+
+   # New (v2.0)
+   color = theme.colors.primary
+   spacing = theme.spacing.md
+   ```
+
+1. **Update theme modifications**:
+
+   ```python
+   # Old (v1.x)
+   theme.update({"colors.primary": "blue"})
+   set_theme(None, **{"colors.primary": "blue"})
+
+   # New (v2.0)
+   set_theme(None, colors_primary="blue")
+   ```
+
+1. **Dynamic access**:
+
+   ```python
+   # Old (v1.x)
+   value = theme.get(f"colors.{key}")
+
+   # New (v2.0)
+   value = getattr(theme.colors, key, default)
+   ```
+
 ## [1.2.0] - 2025-10-26
 
 ### Added

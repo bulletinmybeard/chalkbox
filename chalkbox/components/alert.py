@@ -34,7 +34,7 @@ class Alert:
 
     def __rich__(self) -> RenderableType:
         """Render the alert as a Rich renderable."""
-        glyph = self.theme.glyphs.get(self.level, self.theme.glyphs["info"])
+        glyph = getattr(self.theme.glyphs, self.level, self.theme.glyphs.info)
         color = self.theme.get_style(self.level)
 
         # Build content

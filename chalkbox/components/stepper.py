@@ -157,11 +157,11 @@ class Stepper:
 
         # Status glyphs and colors
         status_config = {
-            StepStatus.PENDING: (self.theme.glyphs["pending"], self.theme.get_style("muted")),
-            StepStatus.RUNNING: (self.theme.glyphs["running"], self.theme.get_style("warning")),
-            StepStatus.DONE: (self.theme.glyphs["complete"], self.theme.get_style("success")),
-            StepStatus.FAILED: (self.theme.glyphs["failed"], self.theme.get_style("error")),
-            StepStatus.SKIPPED: (self.theme.glyphs["skipped"], self.theme.get_style("muted")),
+            StepStatus.PENDING: (self.theme.glyphs.pending, self.theme.get_style("muted")),
+            StepStatus.RUNNING: (self.theme.glyphs.running, self.theme.get_style("warning")),
+            StepStatus.DONE: (self.theme.glyphs.complete, self.theme.get_style("success")),
+            StepStatus.FAILED: (self.theme.glyphs.failed, self.theme.get_style("error")),
+            StepStatus.SKIPPED: (self.theme.glyphs.skipped, self.theme.get_style("muted")),
         }
 
         # Add rows

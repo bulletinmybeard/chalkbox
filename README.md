@@ -32,6 +32,25 @@ While [Rich](https://github.com/Textualize/rich) provides excellent terminal pri
 pip install chalkbox
 ```
 
+## Upgrading to v2.0?
+
+> **⚠️ BREAKING CHANGES**
+>
+> ChalkBox v2.0 introduces breaking changes to the theme customization API. However, most users are **not affected**!
+>
+> **You're affected only if you customize themes programmatically:**
+>
+> - `set_theme(None, **{"colors.primary": "blue"})`
+> - `theme.get("colors.primary")`
+> - `theme.colors["primary"]`
+>
+> **You're NOT affected if you:**
+>
+> - ✓ Just use components normally: `Alert.success()`, `Spinner()`, `Table()`
+> - ✓ Load themes from files: `set_theme(Theme.from_file(path))`
+>
+> **[→ See how to migrate your code](https://github.com/bulletinmybeard/chalkbox/blob/main/CHANGELOG.md#200---2025-11-02)**
+
 ## Quick Start
 
 ```python
@@ -292,7 +311,7 @@ info = "blue"
 success = "✓"
 error = "✗"
 warning = "⚠"
-info = "ℹ"
+info = "i"
 
 [spacing]
 default = 1

@@ -251,6 +251,4 @@ with Section("Padding Component Stats") as stats_section:
 
 console.print(Padding.medium(Align.center(stats_section)))
 
-console.print(
-    "\n[dim]Padding uses your theme's spacing tokens for consistent layouts![/dim]\n"
-)
+console.print("\n[dim]Padding uses your theme's spacing tokens for consistent layouts![/dim]\n")

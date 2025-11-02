@@ -115,7 +115,7 @@ class Padding:
             >>> Padding.xs(alert)
         """
         theme = get_theme()
-        spacing = theme.get("spacing.xs", 0)
+        spacing = theme.spacing.xs
         return cls(renderable, pad=spacing, **kwargs)
 
     @classmethod
@@ -127,7 +127,7 @@ class Padding:
             >>> Padding.small(table)
         """
         theme = get_theme()
-        spacing = theme.get("spacing.sm", 1)
+        spacing = theme.spacing.sm
         return cls(renderable, pad=spacing, **kwargs)
 
     @classmethod
@@ -139,7 +139,7 @@ class Padding:
             >>> Padding.medium(section)
         """
         theme = get_theme()
-        spacing = theme.get("spacing.md", 2)
+        spacing = theme.spacing.md
         return cls(renderable, pad=spacing, **kwargs)
 
     @classmethod
@@ -151,7 +151,7 @@ class Padding:
             >>> Padding.large(alert)
         """
         theme = get_theme()
-        spacing = theme.get("spacing.lg", 3)
+        spacing = theme.spacing.lg
         return cls(renderable, pad=spacing, **kwargs)
 
     @classmethod
@@ -163,7 +163,7 @@ class Padding:
             >>> Padding.xl(Panel("Important"))
         """
         theme = get_theme()
-        spacing = theme.get("spacing.xl", 4)
+        spacing = theme.spacing.xl
         return cls(renderable, pad=spacing, **kwargs)
 
     @classmethod

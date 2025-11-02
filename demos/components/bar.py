@@ -37,7 +37,7 @@ console.print(Bar.percentage(75, severity="warning"))
 console.print("✖ Error (92%): ", end="")
 console.print(Bar.percentage(92, severity="error"))
 
-console.print("ℹ Info (60%): ", end="")
+console.print("i Info (60%): ", end="")
 console.print(Bar.percentage(60, severity="info"))
 
 time.sleep(1)

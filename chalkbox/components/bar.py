@@ -70,10 +70,8 @@ class Bar:
             self.complete_style = complete_style or severity_style
             self.finished_style = finished_style or severity_style
         else:
-            self.complete_style = complete_style or self.theme.get("colors.primary")
-            self.finished_style = (
-                finished_style or complete_style or self.theme.get("colors.success")
-            )
+            self.complete_style = complete_style or self.theme.colors.primary
+            self.finished_style = finished_style or complete_style or self.theme.colors.success
 
         self.style = style or "default"
 
