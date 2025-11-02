@@ -211,6 +211,4 @@ with Section("Align Component Stats") as section:
 
 console.print(Align.center(section))
 
-console.print(
-    "\n[dim]Try combining Align with Padding for precise control over layout![/dim]\n"
-)
+console.print("\n[dim]Try combining Align with Padding for precise control over layout![/dim]\n")

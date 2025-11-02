@@ -4,7 +4,7 @@ import tempfile
 
 import toml
 
-from chalkbox.core.theme import Theme, get_theme, set_theme
+from chalkbox.core.theme import ColorsConfig, SpacingConfig, Theme, get_theme, set_theme
 
 
 class TestThemeCore:
@@ -14,49 +14,57 @@ class TestThemeCore:
         """Test theme initializes with defaults."""
         theme = Theme()
 
-        # Check default colors
-        assert "primary" in theme.colors
-        assert "success" in theme.colors
-        assert "error" in theme.colors
+        # Check default colors (Pydantic models support hasattr)
+        assert hasattr(theme.colors, "primary")
+        assert hasattr(theme.colors, "success")
+        assert hasattr(theme.colors, "error")
+        assert theme.colors.primary == "cyan"
 
         # Check default spacing
-        assert "default" in theme.spacing
-        assert isinstance(theme.spacing["default"], int)
+        assert hasattr(theme.spacing, "default")
+        assert isinstance(theme.spacing.default, int)
 
         # Check default glyphs
-        assert "success" in theme.glyphs
-        assert "error" in theme.glyphs
+        assert hasattr(theme.glyphs, "success")
+        assert hasattr(theme.glyphs, "error")
 
-    def test_theme_get_nested_values(self):
-        """Test getting nested theme values."""
+    def test_theme_nested_values(self):
+        """Test accessing nested theme values."""
         theme = Theme()
 
-        # Test valid paths
-        assert theme.get("colors.primary") == "cyan"
-        assert theme.get("spacing.default") == 1
-        assert theme.get("glyphs.success") == "✓"
+        # Test direct attribute access (Pydantic style)
+        assert theme.colors.primary == "cyan"
+        assert theme.spacing.default == 1
+        assert theme.glyphs.success == "✓"
 
-        # Test invalid paths with defaults
-        assert theme.get("invalid.path") is None
-        assert theme.get("invalid.path", "default") == "default"
+        # Test with getattr for dynamic access
+        assert theme.colors.primary == "cyan"
+        assert theme.spacing.default == 1
+        assert theme.glyphs.success == "✓"
 
-    def test_theme_update_values(self):
-        """Test updating theme values."""
-        theme = Theme()
+        # Test invalid attributes with defaults
+        assert getattr(theme.colors, "nonexistent", "default") == "default"
 
-        updates = {
-            "colors.primary": "magenta",
-            "colors.secondary": "purple",
-            "spacing.xl": 5,
-            "glyphs.custom": "★",
-        }
+    def test_theme_pydantic_validation(self):
+        """Test Pydantic validation for theme configs."""
+        # Valid config
+        theme = Theme(
+            colors=ColorsConfig(primary="magenta", secondary="purple"),
+            spacing=SpacingConfig(xl=5),
+        )
 
-        theme.update(updates)
+        assert theme.colors.primary == "magenta"
+        assert theme.colors.secondary == "purple"
+        assert theme.spacing.xl == 5
 
-        assert theme.colors["primary"] == "magenta"
-        assert theme.colors["secondary"] == "purple"
-        assert theme.spacing["xl"] == 5
-        assert theme.glyphs["custom"] == "★"
+        # Test that extra fields are forbidden (strict validation)
+        from pydantic import ValidationError
+
+        try:
+            ColorsConfig(primary="cyan", custom="red")
+            raise AssertionError("Should have raised ValidationError for extra field")
+        except ValidationError as e:
+            assert "extra" in str(e).lower() or "forbidden" in str(e).lower()
 
     def test_theme_from_file(self):
         """Test loading theme from TOML file."""
@@ -68,7 +76,7 @@ class TestThemeCore:
                 },
                 "spacing": {
                     "default": 2,
-                    "large": 4,
+                    "lg": 4,
                 },
                 "glyphs": {
                     "success": "✓ ",
@@ -81,10 +89,10 @@ class TestThemeCore:
         try:
             theme = Theme.from_file(temp_path)
 
-            assert theme.colors["primary"] == "blue"
-            assert theme.colors["success"] == "bright_green"
-            assert theme.spacing["default"] == 2
-            assert theme.glyphs["success"] == "✓ "
+            assert theme.colors.primary == "blue"
+            assert theme.colors.success == "bright_green"
+            assert theme.spacing.default == 2
+            assert theme.glyphs.success == "✓ "
         finally:
             temp_path.unlink()
 
@@ -98,10 +106,10 @@ class TestThemeCore:
         try:
             theme = Theme.from_env()
 
-            # Only the env-specified values should be updated
-            assert "red" in str(theme.colors)
-            assert "3" in str(theme.spacing)
-            assert "✔" in str(theme.glyphs)
+            # Check that env-specified values are updated
+            assert theme.colors.primary == "red"
+            assert theme.spacing.default == 3
+            assert theme.glyphs.success == "✔"
         finally:
             # Clean up
             del os.environ["CHALKBOX_THEME_COLORS_PRIMARY"]
@@ -113,13 +121,29 @@ class TestThemeCore:
         theme = Theme()
 
         # Test default severity styles
-        assert theme.get_style("info") == theme.colors["info"]
-        assert theme.get_style("success") == theme.colors["success"]
-        assert theme.get_style("warning") == theme.colors["warning"]
-        assert theme.get_style("error") == theme.colors["error"]
+        assert theme.get_style("info") == theme.colors.info
+        assert theme.get_style("success") == theme.colors.success
+        assert theme.get_style("warning") == theme.colors.warning
+        assert theme.get_style("error") == theme.colors.error
 
         # Test fallback
-        assert theme.get_style("unknown") == theme.colors["text"]
+        assert theme.get_style("unknown") == theme.colors.text
+
+    def test_theme_model_dump(self):
+        """Test Pydantic model_dump method."""
+        theme = Theme()
+
+        # Test that we can dump the model to dict
+        data = theme.model_dump()
+
+        assert "colors" in data
+        assert "spacing" in data
+        assert "glyphs" in data
+        assert "borders" in data
+
+        # Check nested structure
+        assert data["colors"]["primary"] == "cyan"
+        assert data["spacing"]["default"] == 1
 
 
 class TestThemeGlobal:
@@ -139,16 +163,16 @@ class TestThemeGlobal:
 
         # Set with instance
         custom_theme = Theme()
-        custom_theme.colors["primary"] = "yellow"
+        custom_theme.colors = ColorsConfig(primary="yellow")
         set_theme(custom_theme)
 
         current = get_theme()
-        assert current.colors["primary"] == "yellow"
+        assert current.colors.primary == "yellow"
 
-        # Set with kwargs
-        set_theme(None, **{"colors.primary": "green"})
+        # Set with kwargs (using underscore format)
+        set_theme(None, colors_primary="green")
         current = get_theme()
-        assert current.colors["primary"] == "green"
+        assert current.colors.primary == "green"
 
 
 class TestThemeIntegration:
@@ -158,21 +182,19 @@ class TestThemeIntegration:
         """Test theme integration with components."""
         from chalkbox import Alert, set_theme
 
-        # Set custom theme
+        # Set custom theme using underscore format
         set_theme(
             None,
-            **{
-                "colors.success": "bright_green",
-                "glyphs.success": "✓ ",
-            },
+            colors_success="bright_green",
+            glyphs_success="✓ ",
         )
 
         # Create component
         alert = Alert.success("Test message")
 
         # Component should use theme
-        assert alert.theme.colors["success"] == "bright_green"
-        assert alert.theme.glyphs["success"] == "✓ "
+        assert alert.theme.colors.success == "bright_green"
+        assert alert.theme.glyphs.success == "✓ "
 
     def test_theme_precedence(self):
         """Test configuration precedence."""

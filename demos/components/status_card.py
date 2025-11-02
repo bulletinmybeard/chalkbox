@@ -175,7 +175,7 @@ card_auto_warning = StatusCard(
     subtitle="192.168.1.11",
     metrics={"Uptime": "8d 4h", "Load": "3.8"},
     bars=[
-        ("CPU", 78.0, 100.0),    # 78% > 70% warning
+        ("CPU", 78.0, 100.0),  # 78% > 70% warning
         ("Memory", 14.5, 16.0),  # 90.6% > 80% warning
         ("Disk", 420.0, 500.0),  # 84% > 75% warning
     ],
@@ -191,7 +191,7 @@ card_auto_error = StatusCard(
     subtitle="192.168.1.12",
     metrics={"Uptime": "2d 1h", "Load": "8.2"},
     bars=[
-        ("CPU", 96.0, 100.0),    # 96% > 90% error
+        ("CPU", 96.0, 100.0),  # 96% > 90% error
         ("Memory", 15.2, 16.0),  # 95% >= 95% error
         ("Disk", 485.0, 500.0),  # 97% > 90% error
     ],
@@ -211,7 +211,7 @@ console.print("\n[bold]Combine explicit severity (4-tuple) and auto-calculated (
 
 # Custom thresholds for specific bars
 custom_thresholds = {
-    "GPU": (50.0, 80.0),          # Lower thresholds for GPU
+    "GPU": (50.0, 80.0),  # Lower thresholds for GPU
     "Temperature": (70.0, 80.0),  # Stricter thresholds for temp
 }
 
@@ -221,9 +221,9 @@ card_mixed = StatusCard(
     subtitle="GPU Node 01",
     metrics={"Model": "ResNet-50", "Batch Size": "128", "Epoch": "42/100"},
     bars=[
-        ("GPU", 65.0, 100.0),            # 3-tuple: auto-calc using thresholds (65% > 50% warning)
+        ("GPU", 65.0, 100.0),  # 3-tuple: auto-calc using thresholds (65% > 50% warning)
         ("VRAM", 7.2, 10.0, "success"),  # 4-tuple: explicit severity
-        ("Temperature", 75.0, 85.0),     # 3-tuple: auto-calc (88% > 80% error)
+        ("Temperature", 75.0, 85.0),  # 3-tuple: auto-calc (88% > 80% error)
     ],
     bar_thresholds=custom_thresholds,
 )

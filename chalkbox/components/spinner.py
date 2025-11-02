@@ -65,7 +65,7 @@ class Spinner:
         if text is None:
             text = self.text
 
-        glyph = self.theme.glyphs["success"]
+        glyph = self.theme.glyphs.success
         color = self.theme.get_style("success")
 
         self._status = Text(f"{glyph} {text}", style=color)
@@ -78,7 +78,7 @@ class Spinner:
         if text is None:
             text = f"Failed: {self.text}"
 
-        glyph = self.theme.glyphs["error"]
+        glyph = self.theme.glyphs.error
         color = self.theme.get_style("error")
 
         self._status = Text(f"{glyph} {text}", style=color)
@@ -91,7 +91,7 @@ class Spinner:
         if text is None:
             text = self.text
 
-        glyph = self.theme.glyphs["warning"]
+        glyph = self.theme.glyphs.warning
         color = self.theme.get_style("warning")
 
         self._status = Text(f"{glyph} {text}", style=color)
