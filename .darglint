@@ -1,0 +1,30 @@
+# Darglint Configuration for ChalkBox
+# Checks that docstrings match function signatures and document exceptions
+
+[darglint]
+# Docstring style (google, numpy, sphinx)
+docstring_style=google
+
+# Strictness level:
+# - short: Just check that docstrings exist
+# - long: Check parameters and return types match
+# - full: Check everything including raises
+strictness=long
+
+# Enable checking that raised exceptions are documented
+enable=DAR401,DAR402
+
+# Ignore these exceptions
+# - AttributeError: Programmer error (accessing None)
+# - AssertionError: Programmer error (failed assertion)
+# - NotImplementedError: Abstract method marker
+# - StopIteration: Iterator protocol
+ignore_raise=AttributeError,AssertionError,NotImplementedError,StopIteration
+
+# Message template
+# DAR401: Undocumented exception
+# DAR402: Exception documented but not raised
+message_template={msg_id} at {path}:{line} - {msg}
+
+# Indentation for docstring (2 or 4 spaces)
+indentation=4
