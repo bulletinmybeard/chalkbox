@@ -1,10 +1,14 @@
+from rich.panel import Panel
+
 from chalkbox import Divider, get_console
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic Divider Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic Divider Usage", style="bold cyan"))
+    console.print()
 
     # Simple separator
     console.print(Divider.separator())
@@ -27,7 +31,9 @@ def demo_basic_usage():
 def demo_advanced_features():
     """Advanced features and options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Advanced Features ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Advanced Features", style="bold cyan"))
+    console.print()
 
     # Different character styles
     console.print("[dim]Double line:[/dim]")
@@ -53,7 +59,9 @@ def demo_advanced_features():
 def demo_styling():
     """Styling and theming options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Styling Options ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Styling Options", style="bold cyan"))
+    console.print()
 
     # Colored dividers
     console.print("[dim]Green divider:[/dim]")
@@ -82,7 +90,9 @@ def demo_styling():
 def demo_use_cases():
     """Common use cases for dividers."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Use Cases ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Use Cases", style="bold cyan"))
+    console.print()
 
     # Document structure
     console.print(Divider.section("1. Introduction"))
@@ -115,11 +125,14 @@ def main():
     """Run all Divider demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - Divider Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - Divider Component Demo           ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_usage()
     demo_advanced_features()

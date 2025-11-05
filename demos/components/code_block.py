@@ -1,10 +1,14 @@
+from rich.panel import Panel
+
 from chalkbox import CodeBlock, Divider, get_console
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic CodeBlock Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic CodeBlock Usage", style="bold cyan"))
+    console.print()
 
     # Python code
     python_code = '''def fibonacci(n):
@@ -37,7 +41,9 @@ print(f"Result: {result}")'''
 def demo_advanced_features():
     """Advanced features and options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Advanced Features ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Advanced Features", style="bold cyan"))
+    console.print()
 
     # Line numbers
     code = """class DatabaseConnection:
@@ -76,7 +82,9 @@ LIMIT 10;"""
 def demo_styling():
     """Styling and theming options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Styling Options ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Styling Options", style="bold cyan"))
+    console.print()
 
     code = """def greet(name):
     return f"Hello, {name}!"
@@ -103,11 +111,14 @@ def main():
     """Run all CodeBlock demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - CodeBlock Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - CodeBlock Component Demo         ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_usage()
     demo_advanced_features()

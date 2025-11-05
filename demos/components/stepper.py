@@ -1,12 +1,16 @@
 import time
 
-from chalkbox import Stepper, get_console
+from rich.panel import Panel
+
+from chalkbox import Divider, Stepper, get_console
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic Stepper Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic Stepper Usage", style="bold cyan"))
+    console.print()
 
     # Simple step list (static)
     console.print("[dim]Static step list:[/dim]")
@@ -27,7 +31,9 @@ def demo_basic_usage():
 def demo_advanced_features():
     """Advanced features and options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Advanced Features ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Advanced Features", style="bold cyan"))
+    console.print()
 
     # Live updating stepper
     console.print("[dim]Live stepper with real-time updates:[/dim]")
@@ -228,11 +234,14 @@ def main():
     """Run all Stepper demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - Stepper Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - Stepper Component Demo           ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_usage()
     demo_advanced_features()

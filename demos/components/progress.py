@@ -1,12 +1,16 @@
 import time
 
-from chalkbox import Progress, get_console
+from rich.panel import Panel
+
+from chalkbox import Divider, Progress, get_console
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic Progress Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic Progress Usage", style="bold cyan"))
+    console.print()
 
     # Single task progress
     console.print("[dim]Single task:[/dim]")
@@ -23,7 +27,9 @@ def demo_basic_usage():
 def demo_advanced_features():
     """Advanced features and options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Advanced Features ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Advanced Features", style="bold cyan"))
+    console.print()
 
     # Multiple concurrent tasks
     console.print("[dim]Multiple tasks:[/dim]")
@@ -68,7 +74,9 @@ def demo_advanced_features():
 def demo_styling():
     """Styling and theming options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Styling Options ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Styling Options", style="bold cyan"))
+    console.print()
 
     # Transient progress (disappears after completion)
     console.print("[dim]Transient progress (disappears):[/dim]")
@@ -96,7 +104,9 @@ def demo_styling():
 def demo_use_cases():
     """Common use cases for progress bars."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Use Cases ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Use Cases", style="bold cyan"))
+    console.print()
 
     # File processing
     console.print("[dim]File processing:[/dim]")
@@ -146,7 +156,9 @@ def demo_use_cases():
 def demo_sequential_workflow():
     """Demonstrate a sequential workflow with progress tracking."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Sequential Workflow ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Sequential Workflow", style="bold cyan"))
+    console.print()
 
     workflow_steps = [
         ("Validating input", 20),
@@ -172,11 +184,14 @@ def main():
     """Run all Progress demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - Progress Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - Progress Component Demo          ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_usage()
     demo_advanced_features()
