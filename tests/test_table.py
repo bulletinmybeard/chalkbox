@@ -134,6 +134,8 @@ class TestTableResponsiveMode:
     def test_responsive_mode_compact_terminal(self):
         """Compact terminal (< 60 cols) should never expand."""
 
+        set_theme(table_responsive_mode=True)
+
         with patch.object(Console, "width", 50):
             # Wide table (7 cols >= 5 threshold)
             table = Table(headers=["A", "B", "C", "D", "E", "F", "G"], expand="auto")
@@ -142,8 +144,12 @@ class TestTableResponsiveMode:
             # Should NOT expand in compact terminal
             assert result is False
 
+        set_theme(table_responsive_mode=False)
+
     def test_responsive_mode_medium_terminal_narrow_table(self):
         """Medium terminal (60-80 cols) with narrow table should not expand."""
+
+        set_theme(table_responsive_mode=True)
 
         with patch.object(Console, "width", 70):
             # Narrow table (3 cols < 5 threshold)
@@ -153,8 +159,12 @@ class TestTableResponsiveMode:
             # Should NOT expand (below threshold)
             assert result is False
 
+        set_theme(table_responsive_mode=False)
+
     def test_responsive_mode_medium_terminal_wide_table(self):
         """Medium terminal (60-80 cols) with wide table should return calculated width."""
+
+        set_theme(table_responsive_mode=True)
 
         # Mock console width to 70 (medium)
         with patch.object(Console, "width", 70):
@@ -168,8 +178,12 @@ class TestTableResponsiveMode:
             # Should be capped at terminal_width - 4
             assert result <= 66  # 70 - 4
 
+        set_theme(table_responsive_mode=False)
+
     def test_responsive_mode_wide_terminal(self):
         """Wide terminal (> 80 cols) should use threshold logic."""
+
+        set_theme(table_responsive_mode=True)
 
         # Mock console width to 120 (wide)
         with patch.object(Console, "width", 120):
@@ -180,6 +194,8 @@ class TestTableResponsiveMode:
             # Narrow table (3 cols < 5 threshold)
             narrow_table = Table(headers=["A", "B", "C"], expand="auto")
             assert narrow_table._calculate_expand() is False  # Below threshold
+
+        set_theme(table_responsive_mode=False)
 
     def test_responsive_mode_disabled(self):
         """When responsive_mode=False, should use simple threshold logic."""
@@ -192,12 +208,14 @@ class TestTableResponsiveMode:
         narrow_table = Table(headers=["A", "B", "C"], expand="auto")
         assert narrow_table._calculate_expand() is False
 
-        set_theme(table_responsive_mode=True)
+        # Reset to default (False)
+        set_theme(table_responsive_mode=False)
 
     def test_responsive_custom_breakpoints(self):
         """Custom breakpoints should be respected."""
 
         set_theme(
+            table_responsive_mode=True,
             table_responsive_breakpoints={
                 "compact": 50,  # < 50 cols: compact
                 "medium": 70,  # 50-70 cols: medium
@@ -211,7 +229,9 @@ class TestTableResponsiveMode:
 
             assert isinstance(result, int)
 
+        # Reset to defaults
         set_theme(
+            table_responsive_mode=False,
             table_responsive_breakpoints={
                 "compact": 60,
                 "medium": 80,
