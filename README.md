@@ -47,7 +47,7 @@ pip install chalkbox
 > - ✓ Just use components normally: `Alert.success()`, `Spinner()`, `Table()`
 > - ✓ Load themes from files: `set_theme(Theme.from_file(path))`
 >
-> **[→ See v2.0 migration guide](https://github.com/bulletinmybeard/chalkbox/blob/main/CHANGELOG.md#200---2025-11-02)**
+> **[→ See v2.0 migration guide](https://github.com/bulletinmybeard/chalkbox/blob/master/CHANGELOG.md#200---2025-11-02)**
 
 ## Quick Start
 
