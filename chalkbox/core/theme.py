@@ -72,6 +72,32 @@ class BordersConfig(BaseModel):
     section: str = "rounded"
 
 
+class TableConfig(BaseModel):
+    """Table component configuration."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    auto_expand_threshold: int = Field(
+        default=5,
+        ge=0,
+        description="Column count threshold for auto-expand. Tables with this many columns or more will expand to terminal width when expand='auto'. Wide tables need more space.",
+    )
+
+    responsive_mode: bool = Field(
+        default=True,
+        description="Enable responsive table sizing based on terminal width. When enabled, tables adapt their width to terminal size like CSS media queries.",
+    )
+
+    responsive_breakpoints: dict[str, int] = Field(
+        default_factory=lambda: {
+            "compact": 60,  # < 60 cols: stay narrow
+            "medium": 80,   # 60-80 cols: calculate width
+            "wide": 81,     # > 80 cols: full expand
+        },
+        description="Terminal width breakpoints for responsive sizing. Keys: compact, medium, wide. Values: terminal column widths.",
+    )
+
+
 class Theme(BaseModel):
     """Theme configuration with design tokens."""
 
@@ -81,6 +107,7 @@ class Theme(BaseModel):
     spacing: SpacingConfig = Field(default_factory=lambda: SpacingConfig())
     glyphs: GlyphsConfig = Field(default_factory=lambda: GlyphsConfig())
     borders: BordersConfig = Field(default_factory=lambda: BordersConfig())
+    table: TableConfig = Field(default_factory=lambda: TableConfig())
 
     @classmethod
     def from_file(cls, path: Path) -> "Theme":
@@ -99,6 +126,8 @@ class Theme(BaseModel):
             theme_data["glyphs"] = GlyphsConfig(**data["glyphs"])
         if "borders" in data:
             theme_data["borders"] = BordersConfig(**data["borders"])
+        if "table" in data:
+            theme_data["table"] = TableConfig(**data["table"])
 
         return cls(**theme_data)
 
@@ -113,6 +142,7 @@ class Theme(BaseModel):
             "spacing": {},
             "glyphs": {},
             "borders": {},
+            "table": {},
         }
 
         for key, value in os.environ.items():
@@ -123,7 +153,7 @@ class Theme(BaseModel):
                 if len(parts) == 2:
                     category, field_name = parts
                     if category in updates:
-                        if category == "spacing":
+                        if category in ("spacing", "table"):
                             try:
                                 updates[category][field_name] = int(value)
                             except ValueError:
@@ -139,6 +169,8 @@ class Theme(BaseModel):
             theme.glyphs = GlyphsConfig(**{**theme.glyphs.model_dump(), **updates["glyphs"]})
         if updates["borders"]:
             theme.borders = BordersConfig(**{**theme.borders.model_dump(), **updates["borders"]})
+        if updates["table"]:
+            theme.table = TableConfig(**{**theme.table.model_dump(), **updates["table"]})
 
         return theme
 
@@ -186,6 +218,7 @@ def get_theme() -> Theme:
         _theme.borders = BordersConfig(
             **{**_theme.borders.model_dump(), **env_theme.borders.model_dump()}
         )
+        _theme.table = TableConfig(**{**_theme.table.model_dump(), **env_theme.table.model_dump()})
 
     return _theme
 
@@ -206,6 +239,7 @@ def set_theme(theme: Theme | None = None, **kwargs: Any) -> None:
             "spacing": {},
             "glyphs": {},
             "borders": {},
+            "table": {},
         }
 
         for key, value in kwargs.items():
@@ -223,3 +257,5 @@ def set_theme(theme: Theme | None = None, **kwargs: Any) -> None:
             _theme.glyphs = GlyphsConfig(**{**_theme.glyphs.model_dump(), **updates["glyphs"]})
         if updates["borders"]:
             _theme.borders = BordersConfig(**{**_theme.borders.model_dump(), **updates["borders"]})
+        if updates["table"]:
+            _theme.table = TableConfig(**{**_theme.table.model_dump(), **updates["table"]})

@@ -6,12 +6,14 @@ from .components.bar import Bar
 from .components.code import CodeBlock
 from .components.columns import ColumnLayout
 from .components.divider import Divider
+from .components.dynamic_progress import DynamicProgress
 from .components.json_view import JsonView
 from .components.kv import KeyValue
 from .components.layout import MultiPanel
 from .components.markdown import Markdown
 from .components.padding import Padding
 from .components.progress import Progress
+from .components.progress_columns import MinuteSecondsColumn
 from .components.prompt import Confirm, FloatInput, Input, IntInput, NumberInput, Select
 from .components.section import Section
 from .components.spinner import Spinner
@@ -37,6 +39,7 @@ __all__ = [
     "Dashboard",
     "DashboardSection",
     "Divider",
+    "DynamicProgress",
     "FloatInput",
     "Input",
     "IntInput",
@@ -46,6 +49,7 @@ __all__ = [
     "LiveLayout",
     "LiveTable",
     "Markdown",
+    "MinuteSecondsColumn",
     "MultiPanel",
     "NumberInput",
     "Padding",
