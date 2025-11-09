@@ -84,7 +84,7 @@ class TableConfig(BaseModel):
     )
 
     responsive_mode: bool = Field(
-        default=True,
+        default=False,
         description="Enable responsive table sizing based on terminal width. When enabled, tables adapt their width to terminal size like CSS media queries.",
     )
 

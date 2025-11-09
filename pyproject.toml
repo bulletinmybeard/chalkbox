@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chalkbox"
-version = "2.0.0"
+version = "2.1.0"
 description = "A batteries-included CLI UI kit on top of Rich"
 authors = [
     "Robin Schulz <bulletinmybeard@gmail.com>"

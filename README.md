@@ -106,12 +106,12 @@ console.print(table)
 
 ### Progress & Status
 
-| Component    | Description                                               |
-| :----------- | :-------------------------------------------------------- |
-| **Spinner**  | Loading indicators with success/fail/warning states       |
-| **Progress** | Multi-task progress bars with ETA and thread-safe updates |
-| **Status**   | Non-blocking status indicators for background operations  |
-| **Stepper**  | Multi-step workflow tracking with status indicators       |
+| Component           | Description                                                                 |
+| :------------------ | :-------------------------------------------------------------------------- |
+| **Spinner**         | Loading indicators with success/fail/warning states                         |
+| **Progress**        | Multi-task progress bars with ETA and thread-safe updates                   |
+| **Status**          | Non-blocking status indicators for background operations                    |
+| **Stepper**         | Multi-step workflow tracking with status indicators                         |
 | **DynamicProgress** | Auto-reordering progress tracker (sorts completed tasks by completion time) |
 
 ### Layout & Structure
