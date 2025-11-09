@@ -355,10 +355,19 @@ success = "bright_green"
 
 [glyphs]
 success = ""
+
+[table]
+# Configure auto-expand threshold (default: 5)
+# Tables with this many columns or more will expand when using expand="auto"
+# Wide tables need more space to display data clearly
+auto_expand_threshold = 7
 EOF
 
 # Run demo to see changes
 poetry run python demos/components/alert.py
+
+# Test table auto-expand behavior
+poetry run python demos/components/table.py
 ```
 
 ### Debugging Components

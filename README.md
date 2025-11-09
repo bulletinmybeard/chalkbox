@@ -32,11 +32,9 @@ While [Rich](https://github.com/Textualize/rich) provides excellent terminal pri
 pip install chalkbox
 ```
 
-## Upgrading to v2.0?
+## Upgrading from v1.2.0
 
-> **⚠️ BREAKING CHANGES**
->
-> ChalkBox v2.0 introduces breaking changes to the theme customization API. However, most users are **not affected**!
+> **Note:** ChalkBox v2.0 introduced breaking changes to the theme customization API.
 >
 > **You're affected only if you customize themes programmatically:**
 >
@@ -49,7 +47,7 @@ pip install chalkbox
 > - ✓ Just use components normally: `Alert.success()`, `Spinner()`, `Table()`
 > - ✓ Load themes from files: `set_theme(Theme.from_file(path))`
 >
-> **[→ See how to migrate your code](https://github.com/bulletinmybeard/chalkbox/blob/main/CHANGELOG.md#200---2025-11-02)**
+> **[→ See v2.0 migration guide](https://github.com/bulletinmybeard/chalkbox/blob/main/CHANGELOG.md#200---2025-11-02)**
 
 ## Quick Start
 
@@ -114,6 +112,7 @@ console.print(table)
 | **Progress** | Multi-task progress bars with ETA and thread-safe updates |
 | **Status**   | Non-blocking status indicators for background operations  |
 | **Stepper**  | Multi-step workflow tracking with status indicators       |
+| **DynamicProgress** | Auto-reordering progress tracker (sorts completed tasks by completion time) |
 
 ### Layout & Structure
 
@@ -190,6 +189,14 @@ table.add_row("Cache", "Degraded", "85.2%", severity="warning")
 table.add_row("Message Queue", "Down", "0%", severity="error")
 
 console.print(table)
+
+# Auto-expand: wide tables fill width, narrow tables stay compact
+narrow = Table(headers=["Setting", "Value"], expand="auto")  # 2 cols: stays compact
+wide = Table(headers=["A", "B", "C", "D", "E", "F", "G"], expand="auto")  # 7 cols: expands
+
+# Customize threshold in ~/.chalkbox/theme.toml:
+# [table]
+# auto_expand_threshold = 7  # Tables with 7+ columns will expand
 ```
 
 ### Progress - Multi-task tracking
@@ -211,6 +218,33 @@ with Progress() as progress:
         if i < 25:
             progress.update(task3, advance=1)
         time.sleep(0.01)
+```
+
+### DynamicProgress - Auto-reordering progress tracker
+
+Perfect for parallel task execution where completion order matters (web scraping, batch processing, etc.). Automatically sorts completed tasks by completion time (earliest first) using milliseconds.
+
+```python
+from chalkbox import DynamicProgress
+import time
+
+with DynamicProgress() as progress:
+    # Add tasks that will complete at different completion times
+    slow = progress.add_task("Slow API")
+    fast = progress.add_task("Fast API")
+    medium = progress.add_task("Medium API")
+
+    # Simulate different completion times
+    time.sleep(0.5)
+    progress.update(fast, completed=100)     # Completes in 0.5s
+
+    time.sleep(0.5)
+    progress.update(medium, completed=100)   # Completes in 1.0s
+
+    time.sleep(1.0)
+    progress.update(slow, completed=100)     # Completes in 2.0s
+
+    # Completed section will show: Fast API (0:00), Medium API (0:01), Slow API (0:02)
 ```
 
 ### KeyValue - Configuration display with secret masking
