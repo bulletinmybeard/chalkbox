@@ -128,12 +128,7 @@ class DynamicProgress:
             self.completed.stop()
 
     def add_task(self, description: str, total: float = 100, **kwargs: Any) -> TaskID:
-        """
-        Add a new task to the active section.
-
-        Raises:
-            RuntimeError: If progress not started (use context manager)
-        """
+        """Add a new task to the active section."""
         if not self.active:
             raise RuntimeError("Progress not started (use context manager)")
 
@@ -165,13 +160,7 @@ class DynamicProgress:
         description: str | None = None,
         **kwargs: Any,
     ) -> None:
-        """
-        Update task progress and handle completion.
-
-        Raises:
-            ValueError: If task_id does not match any active or completed task
-            RuntimeError: If progress bar is not active (must use as context manager)
-        """
+        """Update task progress and handle completion."""
         if task_id not in self.tasks:
             raise ValueError(f"Unknown task ID: {task_id}")
 

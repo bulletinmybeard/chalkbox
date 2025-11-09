@@ -3,8 +3,8 @@ from typing import Any, Literal
 from rich.console import RenderableType
 from rich.table import Table as RichTable
 
-from ..core.theme import get_theme
 from ..core.console import get_console
+from ..core.theme import get_theme
 
 
 class Table:
