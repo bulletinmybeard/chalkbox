@@ -1,13 +1,15 @@
 from rich.panel import Panel
 from rich.text import Text
 
-from chalkbox import Alert, KeyValue, MultiPanel, Table, get_console
+from chalkbox import Alert, Divider, KeyValue, MultiPanel, Table, get_console
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic MultiPanel Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic MultiPanel Usage", style="bold cyan"))
+    console.print()
 
     # Simple header and footer layout
     header = Panel("Application Header", style="bold blue")
@@ -142,11 +144,14 @@ def main():
     """Run all MultiPanel demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - MultiPanel Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - MultiPanel Component Demo        ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_usage()
     demo_advanced_features()

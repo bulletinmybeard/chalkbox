@@ -26,6 +26,9 @@ build/
 
 # Testing
 .pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
 
 # Type checking & Linting
 .mypy_cache/
@@ -35,3 +38,5 @@ build/
 *.log
 pip-log.txt
 pip-delete-this-directory.txt
+
+docs/**/*.md

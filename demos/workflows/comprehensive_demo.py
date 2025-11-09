@@ -3,6 +3,7 @@ import time
 
 from chalkbox import (
     Alert,
+    Divider,
     KeyValue,
     Progress,
     Section,
@@ -242,15 +243,18 @@ def main():
     console.print("\n")
 
     for i, (name, scenario_func) in enumerate(scenarios):
-        console.print(f"\n[dim]{'═' * 50}[/dim]")
+        console.print()
+        console.print(Divider(style="dim", character="═"))
         console.print(f"[bold yellow]Scenario {i+1}: {name}[/bold yellow]")
-        console.print(f"[dim]{'═' * 50}[/dim]\n")
+        console.print(Divider(style="dim", character="═"))
+        console.print()
 
         scenario_func()
 
         time.sleep(1)
 
-    console.print(f"\n[dim]{'═' * 50}[/dim]")
+    console.print()
+    console.print(Divider(style="dim", character="═"))
     console.print("\n[bold green]✓  Demo completed successfully![/bold green]")
     console.print("\nChalkBox provides consistent, beautiful CLI components")
     console.print("for building professional command-line applications.\n")

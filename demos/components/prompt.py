@@ -1,12 +1,15 @@
+from rich.panel import Panel
 from rich.syntax import Syntax
 
-from chalkbox import get_console
+from chalkbox import Divider, get_console
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic Prompt Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic Prompt Usage", style="bold cyan"))
+    console.print()
 
     # Input examples
     console.print("[bold]Input Component[/bold]\n")
@@ -58,7 +61,9 @@ action = Select.ask_once(
 def demo_advanced_features():
     """Advanced features and options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Advanced Features ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Advanced Features", style="bold cyan"))
+    console.print()
 
     # Number input
     console.print("[bold]IntInput and FloatInput[/bold]\n")
@@ -115,7 +120,9 @@ env2 = env_prompt.ask()"""
 def demo_styling():
     """Styling and theming options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Styling Options ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Styling Options", style="bold cyan"))
+    console.print()
 
     console.print("[bold]Prompts use ChalkBox theming automatically[/bold]\n")
 
@@ -140,7 +147,9 @@ option = Select("Choose", ["one", "two", "three"]).ask()"""
 def demo_use_cases():
     """Common use cases for prompts."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Use Cases ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Use Cases", style="bold cyan"))
+    console.print()
 
     # Configuration wizard
     console.print("[bold]Configuration Wizard[/bold]\n")
@@ -212,11 +221,14 @@ def main():
     """Run all Prompt demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - Prompt Components Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - Prompt Components Demo           ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     console.print(
         "\n[bold yellow]Note:[/bold yellow] This demo shows code examples. "

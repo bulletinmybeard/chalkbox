@@ -1,10 +1,18 @@
-from chalkbox import Markdown, get_console
+from rich.panel import Panel
+
+from chalkbox import (
+    Divider,
+    Markdown,
+    get_console,
+)
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic Markdown Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic Markdown Usage", style="bold cyan"))
+    console.print()
 
     # Simple heading
     console.print("[dim]Heading:[/dim]")
@@ -35,7 +43,9 @@ You can also use `inline code` for technical terms.
 def demo_advanced_features():
     """Advanced features and options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Advanced Features ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Advanced Features", style="bold cyan"))
+    console.print()
 
     # Code block
     console.print("[dim]Code block:[/dim]")
@@ -96,7 +106,9 @@ pip install chalkbox
 def demo_styling():
     """Styling and theming options."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Styling Options ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Styling Options", style="bold cyan"))
+    console.print()
 
     # Different heading levels
     console.print("[dim]Heading levels:[/dim]")
@@ -133,7 +145,9 @@ Links: [ChalkBox](https://github.com/example/chalkbox)
 def demo_use_cases():
     """Common use cases for markdown rendering."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Use Cases ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Use Cases", style="bold cyan"))
+    console.print()
 
     # Release notes
     console.print("[dim]Release notes:[/dim]")
@@ -196,11 +210,14 @@ def main():
     """Run all Markdown demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - Markdown Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - Markdown Component Demo          ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_usage()
     demo_advanced_features()

@@ -1,10 +1,14 @@
-from chalkbox import Alert, get_console
+from rich.panel import Panel
+
+from chalkbox import Alert, Divider, get_console
 
 
 def demo_basic_alerts():
     """Basic alert types."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic Alert Types (6 Levels) ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic Alert Types (6 Levels)", style="bold cyan"))
+    console.print()
 
     console.print(Alert.debug("Verbose mode enabled for debugging"))
     console.print(Alert.info("This is an informational message"))
@@ -17,7 +21,9 @@ def demo_basic_alerts():
 def demo_alerts_with_details():
     """Alerts with additional details."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Alerts with Details ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Alerts with Details", style="bold cyan"))
+    console.print()
 
     console.print(
         Alert.debug(
@@ -65,7 +71,9 @@ def demo_alerts_with_details():
 def demo_alert_use_cases():
     """Common use cases for alerts."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Common Use Cases ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Common Use Cases", style="bold cyan"))
+    console.print()
 
     # Configuration issues
     console.print(
@@ -111,7 +119,9 @@ def demo_alert_use_cases():
 def demo_custom_styling():
     """Custom styling options for alerts."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Custom Styling Options ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Custom Styling Options", style="bold cyan"))
+    console.print()
 
     # Title alignment
     console.print(
@@ -165,7 +175,9 @@ def demo_custom_styling():
 def demo_multiline_details():
     """Alerts with multi-line details."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Multi-line Details ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Multi-line Details", style="bold cyan"))
+    console.print()
 
     console.print(
         Alert.error(
@@ -195,7 +207,9 @@ Total installation time: 12.3 seconds""",
 def demo_alerts_in_workflow():
     """Alerts used in a typical CLI workflow."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Workflow Example ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Workflow Example", style="bold cyan"))
+    console.print()
 
     console.print("[bold]Starting deployment process...[/bold]\n")
 
@@ -232,11 +246,14 @@ def main():
     """Run all alert demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - Alert Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - Alert Component Demo             ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_alerts()
     demo_alerts_with_details()

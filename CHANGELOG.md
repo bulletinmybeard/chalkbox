@@ -5,6 +5,77 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-11-09
+
+### Added
+
+- **DynamicProgress Component**: Auto-reordering progress tracker for parallel task execution
+
+  - Automatically sorts completed tasks by completion time (fastest first/millisecond precision)
+  - Time displayed as `M:SS` format (e.g., "0:05", "2:30") without milliseconds
+  - Separate "Active Tasks" and "Completed Tasks" sections (optional)
+  - Optional section titles with `show_section_titles=True`
+  - Context manager aware pattern: `with DynamicProgress() as progress:`
+  - Theme-aware styling with ChalkBox colors
+  - Perfect for: web scraping, batch processing, API benchmarking, any scenario where the order of the completion matters
+  - New `MinuteSecondsColumn` progress column for compact time display
+
+- **Table Component**: Auto-expand and responsive sizing
+
+  - New `expand="auto"` parameter option for smart width management
+  - Configurable threshold via `table.auto_expand_threshold` in theme config (default: 5)
+  - Wide tables (5+ columns) expand to fill terminal width
+  - Narrow tables (< 5 columns) stay compact
+  - Backward compatible - default behavior unchanged (`expand=False`)
+  - Render-time calculation respects dynamically added columns
+  - **Responsive sizing** (CSS media query-like behavior):
+    - Responsive mode disabled by default (`table.responsive_mode: false` in theme config)
+    - Three terminal size breakpoints: compact (\<60 cols), medium (60-80 cols), wide (>80 cols)
+    - **Compact terminals** (\<60 cols): Tables never expand (mobile-like behavior)
+    - **Medium terminals** (60-80 cols): Wide tables get calculated width for optimal fit
+    - **Wide terminals** (>80 cols): Standard auto-expand threshold logic applies
+    - Configurable breakpoints via `table.responsive_breakpoints` in theme config
+    - Works with existing `.live()` method for terminal resize responsiveness
+    - Environment variables: `CHALKBOX_THEME_TABLE_RESPONSIVE_MODE`, `CHALKBOX_THEME_TABLE_RESPONSIVE_BREAKPOINTS_COMPACT`, etc.
+
+1. **Table expansion**:
+
+   ```python
+   # Narrow tables (2-3 columns) - stay compact (already fit well)
+   narrow = Table(headers=["Field", "Value"], expand="auto")
+
+   # Wide tables (7+ columns) - expand to fill width (need more space)
+   wide = Table(
+       headers=["Provider", "Product", "Amount", "Price", "Change", "Available", "Scraped"],
+       expand="auto"
+   )
+
+   # Explicit control still works
+   table = Table(headers=["Name", "Status"], expand=True)  # Always expand
+   table = Table(headers=["Name", "Status"], expand=False)  # Never expand (default)
+   ```
+
+   Configure the threshold in `~/.chalkbox/theme.toml`:
+
+   ```toml
+   [table]
+   # Tables with 7 or more columns will expand (default: 5)
+   auto_expand_threshold = 7
+   ```
+
+   Or via environment variable:
+
+   ```bash
+   export CHALKBOX_THEME_TABLE_AUTO_EXPAND_THRESHOLD=7
+   ```
+
+   Or programmatically:
+
+   ```python
+   from chalkbox import set_theme
+   set_theme(table_auto_expand_threshold=7)
+   ```
+
 ## [2.0.0] - 2025-11-02
 
 ### Added

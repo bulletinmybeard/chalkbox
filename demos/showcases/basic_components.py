@@ -2,6 +2,7 @@ import time
 
 from chalkbox import (
     Alert,
+    Divider,
     KeyValue,
     Progress,
     Section,
@@ -206,7 +207,7 @@ def demo_logging():
 def main():
     """Run all demos."""
     console = get_console()
-    console.print("[bold magenta]🎨 ChalkBox Demo Suite[/bold magenta]\n")
+    console.print("[bold magenta]ChalkBox Demo Suite[/bold magenta]\n")
 
     demos = [
         ("Spinner", demo_spinner),
@@ -220,11 +221,13 @@ def main():
     ]
 
     for _name, demo_func in demos:
-        console.print(f"\n[dim]{'─' * 50}[/dim]")
+        console.print()
+        console.print(Divider(style="dim"))
         demo_func()
         time.sleep(0.5)
 
-    console.print(f"\n[dim]{'─' * 50}[/dim]")
+    console.print()
+    console.print(Divider(style="dim"))
     console.print("\n[bold green]✓  All demos completed![/bold green]")
 
 

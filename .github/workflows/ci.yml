@@ -49,11 +49,14 @@ jobs:
       - name: Type check with mypy
         run: poetry run mypy chalkbox/
 
+      - name: Check docstrings with darglint
+        run: poetry run darglint chalkbox/
+
       - name: Security check with bandit
         run: poetry run bandit -r chalkbox/ -ll
 
       - name: Run tests with pytest
-        run: poetry run pytest tests/ -v --tb=short --cov=chalkbox --cov-report=term-missing
+        run: poetry run pytest tests/ -v --tb=short --cov=chalkbox --cov-report=xml --cov-report=term-missing
 
       - name: Upload coverage reports
         if: matrix.python-version == '3.12'

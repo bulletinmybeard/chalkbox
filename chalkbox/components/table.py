@@ -3,6 +3,7 @@ from typing import Any, Literal
 from rich.console import RenderableType
 from rich.table import Table as RichTable
 
+from ..core.console import get_console
 from ..core.theme import get_theme
 
 
@@ -18,7 +19,7 @@ class Table:
         row_styles: Literal["none", "alternate", "severity"] = "none",
         truncation: Literal["ellipsis", "wrap", "clip"] = "ellipsis",
         max_width: int | None = None,
-        expand: bool = False,
+        expand: bool | Literal["auto"] = False,
         border_style: str | None = None,
     ):
         """Create a table."""
@@ -59,15 +60,82 @@ class Table:
         for row in rows:
             self.add_row(*row)
 
+    def _calculate_expand(self) -> bool | int:
+        """
+        Calculate the expand value based on column count.
+
+        Auto-expand logic:
+        - If expand is explicitly bool, use that value (respects user intent)
+        - If expand is "auto", expand when column count <= threshold
+        - Threshold: Configurable via theme.table.auto_expand_threshold (default: 5)
+        - Tables at/below threshold expand for readability
+        - Wide tables above threshold stay narrow for data density
+        """
+        if isinstance(self.expand, bool):
+            return self.expand
+
+        if self.expand == "auto":
+            column_count = len(self.headers)
+            threshold = self.theme.table.auto_expand_threshold
+
+            if not self.theme.table.responsive_mode:
+                return column_count >= threshold
+
+            console = get_console()
+            terminal_width = console.width
+            breakpoints = self.theme.table.responsive_breakpoints
+
+            # Compact terminal (< 60 cols): never expand (mobile-like)
+            if terminal_width < breakpoints.get("compact", 60):
+                return False
+
+            # Medium terminal (60-100 cols): calculate optimal width
+            elif terminal_width < breakpoints.get("medium", 100):
+                if column_count >= threshold:
+                    # Calculate width: ~12 chars per column + borders
+                    estimated_width = (column_count * 12) + (column_count + 1) * 2
+                    # Cap at terminal width - 4 (margin)
+                    return min(estimated_width, terminal_width - 4)
+                return False
+
+            # Wide terminal (> 100 cols): use threshold logic
+            else:
+                return column_count >= threshold
+
+        return False
+
     def __rich__(self) -> RenderableType:
         """Render the table as a Rich renderable."""
-        table = RichTable(
-            title=self.title,
-            show_header=self.show_header,
-            show_lines=self.show_lines,
-            expand=self.expand,
-            border_style=self.border_style or self.theme.get_style("primary"),
-        )
+        expand_value = self._calculate_expand()
+
+        # Handle responsive width (int) vs expand flag (bool)
+        if isinstance(expand_value, bool):
+            # Standard mode: use expand flag
+            table = RichTable(
+                title=self.title,
+                show_header=self.show_header,
+                show_lines=self.show_lines,
+                expand=expand_value,
+                border_style=self.border_style or self.theme.get_style("primary"),
+            )
+        elif isinstance(expand_value, int):
+            # Responsive mode: set explicit width
+            table = RichTable(
+                title=self.title,
+                show_header=self.show_header,
+                show_lines=self.show_lines,
+                width=expand_value,
+                expand=False,  # Don't expand when using explicit width
+                border_style=self.border_style or self.theme.get_style("primary"),
+            )
+        else:
+            # Fallback (should never happen with correct type hints)
+            table = RichTable(
+                title=self.title,
+                show_header=self.show_header,
+                show_lines=self.show_lines,
+                border_style=self.border_style or self.theme.get_style("primary"),
+            )
 
         # Add columns - let Rich handle everything
         for header in self.headers:

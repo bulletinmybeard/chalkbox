@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chalkbox"
-version = "2.0.0"
+version = "2.1.0"
 description = "A batteries-included CLI UI kit on top of Rich"
 authors = [
     "Robin Schulz <bulletinmybeard@gmail.com>"
@@ -46,6 +46,8 @@ bandit = "^1.8.6"
 mdformat = "^0.7.22"
 mdformat-gfm = "^0.4.1"
 mdformat-tables = "^1.0.0"
+darglint = "^1.8.1"
+pre-commit = "^4.3.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -120,3 +122,29 @@ exclude = [
 wrap = 100          # Match Python line length
 number = false      # Don't auto-number lists
 end_of_line = "lf"  # Unix line endings
+
+[tool.coverage.run]
+source = ["chalkbox"]
+omit = [
+    "tests/*",
+    "demos/*",
+    "*/__pycache__/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+precision = 2
+skip_empty = true
+
+[tool.coverage.xml]
+output = "coverage.xml"

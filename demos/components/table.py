@@ -145,6 +145,161 @@ def demo_styling():
     console.print(subtle_table)
 
 
+def demo_auto_expand():
+    """Auto-expand feature demonstration."""
+    console = get_console()
+    console.print("\n\n[bold cyan]═══ Auto-Expand Feature ═══[/bold cyan]\n")
+
+    # Narrow table (2 columns) - stays compact
+    console.print("[dim]Narrow table (2 columns) with expand='auto' - stays compact:[/dim]")
+    narrow_table = Table(
+        title="Product Configuration",
+        headers=["Setting", "Value"],
+        expand="auto",  # Auto-expand: 2 cols < 5 threshold, so stays compact
+    )
+    narrow_table.add_row("Environment", "Production")
+    narrow_table.add_row("Database Host", "db.example.com")
+    narrow_table.add_row("Cache Enabled", "True")
+    narrow_table.add_row("Debug Mode", "False")
+    console.print(narrow_table)
+    console.print()
+
+    # Medium table (5 columns) - at threshold, expands
+    console.print("[dim]Medium table (5 columns) with expand='auto' - at threshold, expands:[/dim]")
+    medium_table = Table(
+        title="Server Metrics",
+        headers=["Server", "CPU", "Memory", "Disk", "Status"],
+        expand="auto",  # Auto-expand: 5 cols >= 5 threshold, so expands
+    )
+    medium_table.add_row("web-01", "45%", "2.1GB", "156GB", "OK")
+    medium_table.add_row("web-02", "52%", "3.4GB", "189GB", "OK")
+    console.print(medium_table)
+    console.print()
+
+    # Wide table (7 columns) - expands for more space
+    console.print("[dim]Wide table (7 columns) with expand='auto' - expands to fit data:[/dim]")
+    wide_table = Table(
+        title="Product Price Comparison",
+        headers=["Provider", "Product", "Amount", "Price", "Change", "Available", "Updated"],
+        expand="auto",  # Auto-expand: 7 cols >= 5 threshold, so expands
+    )
+    wide_table.add_row("Store A", "Coffee Beans", "500g", "8.99", "+0.50", "Yes", "2025-11-02")
+    wide_table.add_row("Store B", "Coffee Beans", "500g", "7.49", "-0.20", "Yes", "2025-11-02")
+    wide_table.add_row("Store C", "Coffee Beans", "500g", "9.99", "+1.00", "No", "2025-11-01")
+    console.print(wide_table)
+    console.print()
+
+    # Explicit override examples
+    console.print("[dim]Explicit expand=True always expands (even with 2 columns):[/dim]")
+    forced_expand = Table(
+        title="Force Expanded",
+        headers=["Setting", "Value"],
+        expand=True,  # Explicit True overrides auto logic
+    )
+    forced_expand.add_row("Option A", "Value A")
+    forced_expand.add_row("Option B", "Value B")
+    console.print(forced_expand)
+    console.print()
+
+    console.print("[dim]Explicit expand=False never expands (even with 7 columns):[/dim]")
+    forced_narrow = Table(
+        title="Force Narrow",
+        headers=["A", "B", "C", "D", "E", "F", "G"],
+        expand=False,  # Explicit False overrides auto logic
+    )
+    forced_narrow.add_row("1", "2", "3", "4", "5", "6", "7")
+    console.print(forced_narrow)
+    console.print()
+
+    # Configuration example
+    console.print("[dim]Customize threshold via theme config:[/dim]")
+    console.print("  [cyan]~/.chalkbox/theme.toml:[/cyan]")
+    console.print("  [yellow][table][/yellow]")
+    console.print("  [yellow]auto_expand_threshold = 7  # 7+ columns will expand[/yellow]")
+    console.print()
+    console.print("  [cyan]Or via environment variable:[/cyan]")
+    console.print("  [yellow]export CHALKBOX_THEME_TABLE_AUTO_EXPAND_THRESHOLD=7[/yellow]")
+    console.print()
+    console.print("  [cyan]Or programmatically:[/cyan]")
+    console.print("  [yellow]from chalkbox import set_theme[/yellow]")
+    console.print("  [yellow]set_theme(table_auto_expand_threshold=7)[/yellow]")
+
+
+def demo_responsive_sizing():
+    """Responsive sizing feature demonstration (CSS media query-like)."""
+    console = get_console()
+    console.print("\n\n[bold cyan]═══ Responsive Sizing ═══[/bold cyan]\n")
+
+    console.print("[dim]Tables adapt to terminal width like CSS media queries:[/dim]\n")
+
+    # Explain breakpoints
+    console.print("[bold]Three terminal size breakpoints:[/bold]")
+    console.print("  • [cyan]Compact[/cyan] (< 60 cols): Tables never expand (mobile-like)")
+    console.print("  • [cyan]Medium[/cyan] (60-80 cols): Wide tables get calculated width")
+    console.print("  • [cyan]Wide[/cyan] (> 80 cols): Standard threshold logic applies")
+    console.print()
+
+    # Show current terminal width
+    console.print(f"[dim]Your current terminal width: {console.width} columns[/dim]")
+    console.print()
+
+    # Example: Narrow table with auto-expand
+    console.print("[dim]Narrow table (2 columns) with expand='auto' - stays compact:[/dim]")
+    narrow = Table(title="Configuration", headers=["Setting", "Value"], expand="auto")
+    narrow.add_row("Environment", "production")
+    narrow.add_row("Debug Mode", "false")
+    console.print(narrow)
+    console.print()
+
+    # Example: Wide table with auto-expand
+    console.print("[dim]Wide table (7 columns) with expand='auto' - responsive behavior:[/dim]")
+    wide = Table(
+        title="Server Metrics Dashboard",
+        headers=["Server", "CPU", "Memory", "Disk", "Network", "Status", "Uptime"],
+        expand="auto",
+    )
+    wide.add_row("web-01", "45%", "2.1GB", "156GB", "10MB/s", "OK", "14d")
+    wide.add_row("web-02", "52%", "3.4GB", "189GB", "15MB/s", "OK", "14d")
+    console.print(wide)
+    console.print()
+
+    # Configuration examples
+    console.print("[bold]Configuration Options:[/bold]\n")
+
+    console.print("[dim]Disable responsive mode (use simple threshold):[/dim]")
+    console.print("  [yellow]~/.chalkbox/theme.toml:[/yellow]")
+    console.print("  [yellow][table][/yellow]")
+    console.print("  [yellow]responsive_mode = false[/yellow]")
+    console.print()
+
+    console.print("[dim]Customize breakpoints:[/dim]")
+    console.print("  [yellow][table.responsive_breakpoints][/yellow]")
+    console.print("  [yellow]compact = 50   # < 50 cols[/yellow]")
+    console.print("  [yellow]medium = 70    # 50-70 cols[/yellow]")
+    console.print("  [yellow]wide = 71      # > 70 cols[/yellow]")
+    console.print()
+
+    console.print("[dim]Environment variables:[/dim]")
+    console.print("  [yellow]export CHALKBOX_THEME_TABLE_RESPONSIVE_MODE=false[/yellow]")
+    console.print(
+        "  [yellow]export CHALKBOX_THEME_TABLE_RESPONSIVE_BREAKPOINTS_COMPACT=50[/yellow]"
+    )
+    console.print()
+
+    console.print("[dim]Programmatically:[/dim]")
+    console.print("  [yellow]from chalkbox import set_theme[/yellow]")
+    console.print("  [yellow]set_theme(table_responsive_mode=False)[/yellow]")
+    console.print("  [yellow]set_theme(table_responsive_breakpoints={'compact': 50, ...})[/yellow]")
+    console.print()
+
+    console.print(
+        "[bold cyan]💡 Tip:[/bold cyan] [dim]Resize your terminal to see responsive behavior![/dim]"
+    )
+    console.print("[dim]Use .live() method for tables that update during resize:[/dim]")
+    console.print("  [yellow]with table.live():[/yellow]")
+    console.print("  [yellow]    time.sleep(10)  # Table stays responsive[/yellow]")
+
+
 def demo_use_cases():
     """Common use cases for tables."""
     console = get_console()
@@ -217,14 +372,20 @@ def main():
     demo_basic_usage()
     demo_advanced_features()
     demo_styling()
+    demo_auto_expand()
+    demo_responsive_sizing()
     demo_use_cases()
 
     console.print("\n[bold green]✓  Table demo completed![/bold green]")
     console.print(
         "\n[dim]Table is perfect for: data display, reports, status dashboards, and structured information[/dim]"
     )
+    console.print("[dim]Customizable border styles for color-coded tables and visual theming[/dim]")
     console.print(
-        "[dim]Customizable border styles for color-coded tables and visual theming[/dim]\n"
+        "[dim]Auto-expand feature: tables intelligently adjust width based on column count[/dim]"
+    )
+    console.print(
+        "[dim]Responsive sizing: tables adapt to terminal width like CSS media queries[/dim]\n"
     )
 
 

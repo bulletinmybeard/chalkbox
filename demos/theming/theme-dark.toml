@@ -46,3 +46,23 @@ style = "heavy"
 panel = "heavy"
 table = "heavy"
 section = "double"
+
+[table]
+# Column count threshold for auto-expand
+# Tables with this many columns or more will expand to fill terminal width when expand="auto"
+# Default: 5
+auto_expand_threshold = 5
+
+# Responsive sizing (CSS media query-like behavior)
+# When enabled, tables adapt their width based on terminal size
+# Default: true
+responsive_mode = true
+
+# Terminal width breakpoints for responsive sizing
+# compact: < 60 cols (mobile-like, never expand)
+# medium: 60-80 cols (calculate optimal width for wide tables)
+# wide: > 80 cols (use standard threshold logic)
+[table.responsive_breakpoints]
+compact = 60
+medium = 80
+wide = 81

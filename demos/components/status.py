@@ -1,12 +1,16 @@
 import time
 
-from chalkbox import Status, get_console, status
+from rich.panel import Panel
+
+from chalkbox import Divider, Status, get_console, status
 
 
 def demo_basic_usage():
     """Basic usage examples."""
     console = get_console()
-    console.print("\n[bold cyan]═══ Basic Status Usage ═══[/bold cyan]\n")
+    console.print()
+    console.print(Divider(title="Basic Status Usage", style="bold cyan"))
+    console.print()
 
     # Simple status
     console.print("[dim]Simple status indicator:[/dim]")
@@ -24,7 +28,10 @@ def demo_basic_usage():
 def demo_advanced_features():
     """Advanced features and options."""
     console = get_console()
-    console.print("\n\n[bold cyan]═══ Advanced Features ═══[/bold cyan]\n")
+    console.print()
+    console.print()
+    console.print(Divider(title="Advanced Features", style="bold cyan"))
+    console.print()
 
     # Updating status message
     console.print("[dim]Updating status message:[/dim]")
@@ -60,7 +67,10 @@ def demo_advanced_features():
 def demo_styling():
     """Styling and theming options."""
     console = get_console()
-    console.print("\n\n[bold cyan]═══ Styling Options ═══[/bold cyan]\n")
+    console.print()
+    console.print()
+    console.print(Divider(title="Styling Options", style="bold cyan"))
+    console.print()
 
     # Custom spinner speed
     console.print("[dim]Fast spinner:[/dim]")
@@ -78,7 +88,10 @@ def demo_styling():
 def demo_use_cases():
     """Common use cases for status displays."""
     console = get_console()
-    console.print("\n\n[bold cyan]═══ Use Cases ═══[/bold cyan]\n")
+    console.print()
+    console.print()
+    console.print(Divider(title="Use Cases", style="bold cyan"))
+    console.print()
 
     # File processing with progress updates
     console.print("[dim]File processing:[/dim]")
@@ -130,7 +143,10 @@ def demo_use_cases():
 def demo_comparison_with_spinner():
     """Show the difference between Status and Spinner."""
     console = get_console()
-    console.print("\n\n[bold cyan]═══ Status vs Spinner ═══[/bold cyan]\n")
+    console.print()
+    console.print()
+    console.print(Divider(title="Status vs Spinner", style="bold cyan"))
+    console.print()
 
     console.print("[bold]Status allows console output during operation:[/bold]\n")
 
@@ -153,11 +169,14 @@ def main():
     """Run all Status demos."""
     console = get_console()
 
+    console.print()
     console.print(
-        "\n[bold magenta]╔════════════════════════════════════════════════╗[/bold magenta]"
+        Panel(
+            "[bold]ChalkBox - Status Component Demo[/bold]",
+            style="magenta",
+            expand=False,
+        )
     )
-    console.print("[bold magenta]║   ChalkBox - Status Component Demo            ║[/bold magenta]")
-    console.print("[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]")
 
     demo_basic_usage()
     demo_advanced_features()
