@@ -220,7 +220,7 @@ class TestTableResponsiveMode:
                 "compact": 50,  # < 50 cols: compact
                 "medium": 70,  # 50-70 cols: medium
                 "wide": 71,  # > 70 cols: wide
-            }
+            },
         )
 
         with patch.object(Console, "width", 60):
@@ -236,7 +236,7 @@ class TestTableResponsiveMode:
                 "compact": 60,
                 "medium": 80,
                 "wide": 81,
-            }
+            },
         )
 
     def test_isinstance_bool_vs_int_check_order(self):
