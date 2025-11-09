@@ -23,6 +23,7 @@ def demo_simple_live_table():
 
     console.print("\n[bold cyan]═══ Simple Live Table Demo ═══[/bold cyan]")
     console.print("[dim]This table will stay visible and respond to terminal resize[/dim]")
+    console.print("[dim]Using screen=True for clean, non-stacking display[/dim]")
     console.print("[yellow]Press Ctrl+C to stop (will run for 10 seconds)[/yellow]\n")
 
     # Create a static table
@@ -34,9 +35,11 @@ def demo_simple_live_table():
         severity = "success" if value < 80 else "warning"
         table.add_row(metric.title(), f"{value}%", status, severity=severity)
 
-    # Make it live - it will respond to resize automatically!
+    # Make it live with screen=True for clean display (no stacking)
+    # screen=True: Takes over terminal, clears on exit (best for dashboards)
+    # screen=False (default): Output accumulates in terminal (scrollable history)
     try:
-        with table.live():
+        with table.live(screen=True):
             time.sleep(10)
     except KeyboardInterrupt:
         pass
@@ -50,6 +53,7 @@ def demo_updating_table():
 
     console.print("\n[bold cyan]═══ Auto-Updating Table Demo ═══[/bold cyan]")
     console.print("[dim]Watch the metrics update in real-time + resize support[/dim]")
+    console.print("[dim]Clean display mode - no stacking of previous renders[/dim]")
     console.print("[yellow]Press Ctrl+C to stop (will run for 10 seconds)[/yellow]\n")
 
     def create_table():
@@ -83,11 +87,11 @@ def demo_updating_table():
 
         return table
 
-    # Create table with update function
+    # Create table with update function and screen=True for clean updates
     initial_table = create_table()
 
     try:
-        with initial_table.live(update_fn=create_table, refresh_per_second=2):
+        with initial_table.live(update_fn=create_table, refresh_per_second=2, screen=True):
             time.sleep(10)
     except KeyboardInterrupt:
         pass
@@ -101,6 +105,7 @@ def demo_live_table_wrapper():
 
     console.print("\n[bold cyan]═══ LiveTable Wrapper Demo ═══[/bold cyan]")
     console.print("[dim]Using LiveTable for convenient live updates[/dim]")
+    console.print("[dim]Clean dashboard mode with screen=True[/dim]")
     console.print("[yellow]Press Ctrl+C to stop (will run for 10 seconds)[/yellow]\n")
 
     def generate_process_table():
@@ -127,7 +132,7 @@ def demo_live_table_wrapper():
         return table
 
     try:
-        with LiveTable(update_fn=generate_process_table, refresh_per_second=2):
+        with LiveTable(update_fn=generate_process_table, refresh_per_second=2, screen=True):
             time.sleep(10)
     except KeyboardInterrupt:
         pass
@@ -141,6 +146,7 @@ def demo_live_component_generic():
 
     console.print("\n[bold cyan]═══ Generic LiveComponent Demo ═══[/bold cyan]")
     console.print("[dim]LiveComponent works with any ChalkBox component[/dim]")
+    console.print("[dim]Clean display for live KeyValue updates[/dim]")
     console.print("[yellow]Press Ctrl+C to stop (will run for 10 seconds)[/yellow]\n")
 
     from chalkbox import KeyValue
@@ -159,7 +165,7 @@ def demo_live_component_generic():
     initial_kv = generate_stats()
 
     try:
-        with LiveComponent(initial_kv, update_fn=generate_stats, refresh_per_second=2):
+        with LiveComponent(initial_kv, update_fn=generate_stats, refresh_per_second=2, screen=True):
             time.sleep(10)
     except KeyboardInterrupt:
         pass
