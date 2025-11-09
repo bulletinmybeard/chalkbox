@@ -91,8 +91,8 @@ class TableConfig(BaseModel):
     responsive_breakpoints: dict[str, int] = Field(
         default_factory=lambda: {
             "compact": 60,  # < 60 cols: stay narrow
-            "medium": 80,   # 60-80 cols: calculate width
-            "wide": 81,     # > 80 cols: full expand
+            "medium": 80,  # 60-80 cols: calculate width
+            "wide": 81,  # > 80 cols: full expand
         },
         description="Terminal width breakpoints for responsive sizing. Keys: compact, medium, wide. Values: terminal column widths.",
     )
