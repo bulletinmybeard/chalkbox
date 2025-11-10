@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2025-11-10
+
+### Fixed
+
+- **DynamicProgress Component**: Fixed critical rendering bugs
+  - Fixed double rendering issue (tasks appeared duplicated)
+  - Fixed progress bars showing live updates (not just final state)
+  - Fixed elapsed time display (was showing 0:00 for all tasks)
+  - Fixed task position format (now shows N/Total like 1/5, 2/5)
+  - Removed `show_section_titles` parameter
+  - Component now displays all tasks immediately with live progress
+  - Tasks dynamically reorder as they complete (sorted by speed, fastest first)
+
+### Note
+
+This patch release fixes critical bugs in the DynamicProgress component
+released in v2.1.0. All Table enhancements from v2.1.0 remain intact and functional.
+
 ## [2.1.0] - 2025-11-09
 
 ### Added

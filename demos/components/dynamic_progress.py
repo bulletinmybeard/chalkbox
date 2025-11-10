@@ -16,11 +16,11 @@ def demo_basic_auto_ordering():
 
     with DynamicProgress() as progress:
         # Add 5 tasks with different completion times
-        task1 = progress.add_task("Very slow task (0:06)", total=100)
-        task2 = progress.add_task("Fast task (0:02)", total=100)
-        task3 = progress.add_task("Medium task (0:04)", total=100)
-        task4 = progress.add_task("Very fast task (0:01)", total=100)
-        task5 = progress.add_task("Slow task (0:05)", total=100)
+        task1 = progress.add_task("Very slow task", total=100)
+        task2 = progress.add_task("Fast task", total=100)
+        task3 = progress.add_task("Medium task", total=100)
+        task4 = progress.add_task("Very fast task", total=100)
+        task5 = progress.add_task("Slow task", total=100)
 
         # Complete tasks with staggered timing
         # Very fast (1s)
@@ -54,30 +54,6 @@ def demo_basic_auto_ordering():
     )
 
 
-def demo_section_titles():
-    """Demonstrate section titles for active and completed tasks."""
-    console = get_console()
-    console.print("\n[bold cyan]Section Titles Demo[/bold cyan]\n")
-
-    console.print("[dim]Show 'Active Tasks' and 'Completed Tasks' section headers:[/dim]\n")
-
-    with DynamicProgress(show_section_titles=True) as progress:
-        tasks = [
-            progress.add_task("Processing file 1", total=50),
-            progress.add_task("Processing file 2", total=75),
-            progress.add_task("Processing file 3", total=60),
-        ]
-
-        # Complete tasks one by one
-        for i, task_id in enumerate(tasks):
-            # Simulate work
-            for _ in range([50, 75, 60][i]):
-                progress.update(task_id, advance=1)
-                time.sleep(0.02)
-
-    console.print("\n[green]✓ All tasks completed with section titles[/green]\n")
-
-
 def demo_millisecond_precision():
     """Demonstrate millisecond precision for tasks finishing in same second."""
     console = get_console()
@@ -89,9 +65,9 @@ def demo_millisecond_precision():
 
     with DynamicProgress() as progress:
         # Add tasks that will finish very close together
-        task1 = progress.add_task("Task 1 (finishes first)", total=100)
-        task2 = progress.add_task("Task 2 (finishes second)", total=100)
-        task3 = progress.add_task("Task 3 (finishes third)", total=100)
+        task1 = progress.add_task("Task 1", total=100)
+        task2 = progress.add_task("Task 2", total=100)
+        task3 = progress.add_task("Task 3", total=100)
 
         # Complete all within ~100ms but in specific order
         time.sleep(0.03)  # 30ms
@@ -219,9 +195,6 @@ def main():
     )
 
     demo_basic_auto_ordering()
-    time.sleep(1)
-
-    demo_section_titles()
     time.sleep(1)
 
     demo_millisecond_precision()
