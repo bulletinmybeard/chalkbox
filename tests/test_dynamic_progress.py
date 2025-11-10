@@ -12,17 +12,14 @@ class TestDynamicProgress:
         """Test basic dynamic progress creation."""
         progress = DynamicProgress()
         assert progress.transient is False
-        assert progress.show_section_titles is False
         assert progress.tasks == {}
         assert progress.completed_tasks == []
-        assert progress.active is None
-        assert progress.completed is None
+        assert progress._live is None
 
     def test_creation_with_options(self):
         """Test dynamic progress with custom settings."""
-        progress = DynamicProgress(transient=True, show_section_titles=True)
+        progress = DynamicProgress(transient=True)
         assert progress.transient is True
-        assert progress.show_section_titles is True
 
     def test_add_task_outside_context(self):
         """Test that add_task raises error outside context manager."""
@@ -33,17 +30,12 @@ class TestDynamicProgress:
     def test_context_manager_lifecycle(self):
         """Test context manager properly initializes and cleans up."""
         progress = DynamicProgress()
-        assert progress.active is None
-        assert progress.completed is None
         assert progress._live is None
 
         with progress:
-            assert progress.active is not None
-            assert progress.completed is not None
             assert progress._live is not None
 
-        assert progress.active is not None
-        assert progress.completed is not None
+        assert progress._live is not None
 
     def test_add_task_returns_stable_id(self):
         """Test that add_task returns stable external task IDs."""
@@ -64,8 +56,9 @@ class TestDynamicProgress:
             task_data = progress.tasks[task_id]
             assert task_data["description"] == "Test task"
             assert task_data["total"] == 100
+            assert task_data["completed"] == 0.0
             assert "start_ms" in task_data
-            assert "active_id" in task_data
+            assert "add_order" in task_data
 
     def test_update_task(self):
         """Test updating task progress."""
