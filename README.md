@@ -183,10 +183,17 @@ from chalkbox import Table, get_console
 console = get_console()
 table = Table(headers=["Service", "Status", "Uptime"], row_styles="severity")
 
-# Severity determines row color (success=green, warning=yellow, error=red)
+# 11 severity levels available:
+# Basic: debug, info, success, warning, error, critical, muted, primary
+# Bold emphasis: important, active, urgent, highlighted
+# Visual modifiers: orphaned (dimmed), deleted (strike-through)
+
 table.add_row("API Gateway", "Running", "99.9%", severity="success")
 table.add_row("Cache", "Degraded", "85.2%", severity="warning")
 table.add_row("Message Queue", "Down", "0%", severity="error")
+table.add_row("Admin User", "Online", "Active", severity="important")
+table.add_row("Legacy Service", "Offline", "N/A", severity="orphaned")
+table.add_row("Cancelled Task", "Removed", "N/A", severity="deleted")
 
 console.print(table)
 

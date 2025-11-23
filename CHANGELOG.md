@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2025-11-23
+
+### Added
+
+- **Table Component**: Extended severity levels for row styling
+
+  - Added 6 new severity levels: `important`, `active`, `urgent`, `highlighted`, `orphaned`, `deleted`
+  - **Bold emphasis severities** for highlighting important rows:
+    - `important` - Bold cyan for emphasized/featured rows (e.g., admin users, primary records)
+    - `active` - Bold bright cyan for currently active items (e.g., online users, running processes)
+    - `urgent` - Bold red for time-sensitive items (e.g., payment due, overdue tasks)
+    - `highlighted` - Bold bright cyan for selected/matched items (e.g., search results)
+  - **Visual effect severities** for item states:
+    - `orphaned` - Dimmed text for inactive/orphaned items (e.g., orphaned snapshots, legacy records)
+    - `deleted` - Strike-through text for soft-deleted items (e.g., cancelled tasks, removed records)
+  - Total of 11 severity levels now available (previously 5)
+  - All severities work with `row_styles="severity"` parameter
+  - Maintains backward compatibility with existing severity levels
+
+  ```python
+  table = Table(headers=["User", "Status"], row_styles="severity")
+  table.add_row("admin", "Online", severity="important")      # Bold cyan
+  table.add_row("user1", "Active", severity="active")         # Bold bright cyan
+  table.add_row("user2", "Payment Due", severity="urgent")    # Bold red
+  table.add_row("user3", "Match", severity="highlighted")     # Bold bright cyan
+  table.add_row("user4", "Inactive", severity="orphaned")     # Dimmed
+  table.add_row("user5", "Removed", severity="deleted")       # Strike-through
+  ```
+
+### Changed
+
+- **Dependencies**: Updated Python packages to latest versions
+  - Updated `pydantic` from 2.12.3 to 2.12.4
+  - Updated `pydantic-core` from 2.41.4 to 2.41.5
+  - Updated `pydantic-settings` from 2.11.0 to 2.12.0
+  - Updated `psutil` from 7.1.2 to 7.1.3
+
 ## [2.1.1] - 2025-11-10
 
 ### Fixed
