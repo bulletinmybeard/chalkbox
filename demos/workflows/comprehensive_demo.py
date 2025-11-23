@@ -244,9 +244,9 @@ def main():
 
     for i, (name, scenario_func) in enumerate(scenarios):
         console.print()
-        console.print(Divider(style="dim", character="═"))
+        console.print(Divider(style="dim", characters="═"))
         console.print(f"[bold yellow]Scenario {i+1}: {name}[/bold yellow]")
-        console.print(Divider(style="dim", character="═"))
+        console.print(Divider(style="dim", characters="═"))
         console.print()
 
         scenario_func()
@@ -254,7 +254,7 @@ def main():
         time.sleep(1)
 
     console.print()
-    console.print(Divider(style="dim", character="═"))
+    console.print(Divider(style="dim", characters="═"))
     console.print("\n[bold green]✓  Demo completed successfully![/bold green]")
     console.print("\nChalkBox provides consistent, beautiful CLI components")
     console.print("for building professional command-line applications.\n")

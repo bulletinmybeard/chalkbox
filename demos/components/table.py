@@ -89,6 +89,45 @@ def demo_styling():
     console.print(table_severity)
     console.print()
 
+    # Orphaned severity (dimmed rows)
+    console.print("[dim]Orphaned severity (dimmed for inactive/orphaned items):[/dim]")
+    table_orphaned = Table(
+        title="Snapshots", headers=["ID", "Version", "Created", "Source", "Files"], row_styles="severity"
+    )
+    table_orphaned.add_row("2", "v1-4", "2025-11-23 03:14:33", "test-snapshot-project", "4", severity="success")
+    table_orphaned.add_row("1", "v1-3", "2025-11-23 03:12:22", "test-snapshot-project", "3", severity="success")
+    table_orphaned.add_row("(Orphaned)", "v1", "2025-11-23 00:38:48", "test", "0", severity="orphaned")
+    table_orphaned.add_row("(Orphaned)", "v1-2", "2025-11-23 00:38:38", "test-python-fallback", "3", severity="orphaned")
+    table_orphaned.add_row("(Orphaned)", "v1-1", "2025-11-22 23:57:52", "test-python-fallback", "3", severity="orphaned")
+    console.print(table_orphaned)
+    console.print()
+
+    # Bold severities (important, active, urgent, highlighted)
+    console.print("[dim]Bold severities (emphasized rows):[/dim]")
+    table_bold = Table(
+        title="User Management", headers=["User", "Role", "Status", "Last Active"], row_styles="severity"
+    )
+    table_bold.add_row("admin", "Administrator", "Online", "2 min ago", severity="important")
+    table_bold.add_row("john.doe", "Premium User", "Online", "5 min ago", severity="active")
+    table_bold.add_row("jane.smith", "User", "Payment Due", "1 hour ago", severity="urgent")
+    table_bold.add_row("bob.wilson", "User", "Search Match", "3 hours ago", severity="highlighted")
+    table_bold.add_row("alice.jones", "User", "Offline", "2 days ago", severity="muted")
+    console.print(table_bold)
+    console.print()
+
+    # Deleted severity (strike-through)
+    console.print("[dim]Deleted severity (strike-through for deleted items):[/dim]")
+    table_deleted = Table(
+        title="Task List", headers=["ID", "Task", "Assignee", "Status"], row_styles="severity"
+    )
+    table_deleted.add_row("1", "Implement feature X", "John", "In Progress", severity="active")
+    table_deleted.add_row("2", "Fix bug Y", "Jane", "Completed", severity="success")
+    table_deleted.add_row("3", "Write documentation", "Bob", "Deleted", severity="deleted")
+    table_deleted.add_row("4", "Code review Z", "Alice", "Cancelled", severity="deleted")
+    table_deleted.add_row("5", "Deploy to production", "Admin", "Urgent", severity="urgent")
+    console.print(table_deleted)
+    console.print()
+
     # Expanded table
     console.print("[dim]Expanded table (full width):[/dim]")
     table_exp = Table(
