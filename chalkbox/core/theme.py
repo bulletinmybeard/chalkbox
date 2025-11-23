@@ -186,6 +186,12 @@ class Theme(BaseModel):
             "default": self.colors.text,
             "muted": self.colors.muted,
             "primary": self.colors.primary,
+            "orphaned": self.colors.muted,
+            "important": f"bold {self.colors.primary}",
+            "active": f"bold {self.colors.accent}",
+            "urgent": f"bold {self.colors.error}",
+            "highlighted": f"bold {self.colors.accent}",
+            "deleted": f"strike {self.colors.muted}",
         }
         return color_map.get(level, self.colors.text)
 

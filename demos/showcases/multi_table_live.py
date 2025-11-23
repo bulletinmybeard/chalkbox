@@ -1,6 +1,7 @@
 from contextlib import suppress
 from datetime import datetime
 import random
+import sys
 import time
 
 from rich.console import Group
@@ -394,22 +395,30 @@ def main():
         "[bold magenta]╚════════════════════════════════════════════════╝[/bold magenta]\n"
     )
 
-    console.print("[bold]Select a demo:[/bold]\n")
-    console.print("  [cyan]1[/cyan] - Dashboard Pattern (4 tables in structured layout)")
-    console.print("  [cyan]2[/cyan] - Group Pattern (5 tables stacked vertically)")
-    console.print("  [cyan]3[/cyan] - Grid Pattern (2x2 grid layout)")
-    console.print("  [cyan]4[/cyan] - Size Comparison (responsive behavior demo)")
-    console.print("  [cyan]5[/cyan] - Run All Demos")
-    console.print("  [cyan]q[/cyan] - Quit\n")
-
-    choice = input("[bold yellow]Enter choice (1-5 or q):[/bold yellow] ").strip()
-
     demos = {
         "1": demo_dashboard_pattern,
         "2": demo_group_pattern,
         "3": demo_grid_pattern,
         "4": demo_size_comparison,
     }
+
+    if len(sys.argv) > 1:
+        choice = sys.argv[1]
+    else:
+        # Show menu
+        console.print("[bold]Select a demo:[/bold]\n")
+        console.print("  [cyan]1[/cyan] - Dashboard Pattern (4 tables in structured layout)")
+        console.print("  [cyan]2[/cyan] - Group Pattern (5 tables stacked vertically)")
+        console.print("  [cyan]3[/cyan] - Grid Pattern (2x2 grid layout)")
+        console.print("  [cyan]4[/cyan] - Size Comparison (responsive behavior demo)")
+        console.print("  [cyan]5[/cyan] - Run All Demos")
+        console.print("  [cyan]q[/cyan] - Quit\n")
+
+        try:
+            choice = input("[bold yellow]Enter choice (1-5 or q):[/bold yellow] ").strip()
+        except EOFError:
+            # Non-interactive mode (e.g., piped input) - run all demos
+            choice = "5"
 
     if choice == "5":
         for demo_func in demos.values():

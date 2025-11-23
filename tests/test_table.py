@@ -48,6 +48,41 @@ class TestTable:
         assert table._row_severities[0] == "success"
         assert table._row_severities[1] == "error"
 
+    def test_table_with_orphaned_severity(self):
+        """Test table with orphaned severity (dimmed rows)."""
+        table = Table(headers=["ID", "Version", "Status"], row_styles="severity")
+        table.add_row("1", "v1-4", "Active", severity="success")
+        table.add_row("2", "v1-3", "Active", severity="success")
+        table.add_row("(Orphaned)", "v1", "Inactive", severity="orphaned")
+
+        assert table._row_severities[0] == "success"
+        assert table._row_severities[1] == "success"
+        assert table._row_severities[2] == "orphaned"
+
+    def test_table_with_bold_severities(self):
+        """Test table with bold severities (important, active, urgent, highlighted)."""
+        table = Table(headers=["User", "Role", "Status"], row_styles="severity")
+        table.add_row("admin", "Administrator", "Online", severity="important")
+        table.add_row("john.doe", "Premium User", "Online", severity="active")
+        table.add_row("jane.smith", "User", "Payment Due", severity="urgent")
+        table.add_row("bob.wilson", "User", "Search Match", severity="highlighted")
+
+        assert table._row_severities[0] == "important"
+        assert table._row_severities[1] == "active"
+        assert table._row_severities[2] == "urgent"
+        assert table._row_severities[3] == "highlighted"
+
+    def test_table_with_deleted_severity(self):
+        """Test table with deleted severity (strike-through rows)."""
+        table = Table(headers=["ID", "Task", "Status"], row_styles="severity")
+        table.add_row("1", "Implement feature X", "In Progress", severity="active")
+        table.add_row("2", "Fix bug Y", "Completed", severity="success")
+        table.add_row("3", "Write documentation", "Deleted", severity="deleted")
+
+        assert table._row_severities[0] == "active"
+        assert table._row_severities[1] == "success"
+        assert table._row_severities[2] == "deleted"
+
 
 class TestTableAutoExpand:
     """Tests for Table auto-expand functionality."""
