@@ -466,17 +466,6 @@ If you're upgrading from v1.x to v2.0:
 - Fail-safe error handling patterns in all components
 - Zero dependencies beyond Rich
 
-## Version History Summary
-
-- **0.1.0** (2025-01-09) - Initial release as terminal-ui-kit with core components
-- **0.4.0** (2025-01-10) - Added interactive input components
-- **0.5.0** (2025-01-10) - Added CodeBlock and Progress, migrated to Ruff
-- **0.6.0** (2025-01-22) - Added KeyValue with secret masking
-- **0.7.0** (2025-03-30) - Added MultiPanel and advanced live demos
-- **0.8.0** (2025-07-27) - Added live components and Dashboard builder
-- **0.9.0** (2025-10-12) - Renamed to ChalkBox, comprehensive documentation
-- **1.0.0** (2025-10-13) - **Stable release**: Enhanced components, production-ready, 100% linting compliance
-
 ## Links
 
 - **PyPI**: https://pypi.org/project/chalkbox/
