@@ -215,6 +215,50 @@ console.print(Bar.percentage(65, width=40, complete_style="green", style="white"
 time.sleep(1)
 
 console.print("\n")
+console.print(Divider("Block Style Bars"))
+console.print("\n[bold]Thicker block-character bars (bar_style='block'):[/bold]\n")
+
+console.print("Low usage  (25%): ", end="")
+console.print(Bar.percentage(25, bar_style="block"))
+
+console.print("Medium usage (50%): ", end="")
+console.print(Bar.percentage(50, bar_style="block"))
+
+console.print("High usage (75%): ", end="")
+console.print(Bar.percentage(75, bar_style="block"))
+
+console.print("Full (100%): ", end="")
+console.print(Bar.percentage(100, bar_style="block"))
+
+time.sleep(1)
+
+console.print("\n[bold]Block bars with severity coloring:[/bold]\n")
+
+console.print("✓ Success (45%): ", end="")
+console.print(Bar.percentage(45, severity="success", bar_style="block"))
+
+console.print("⚠ Warning (75%): ", end="")
+console.print(Bar.percentage(75, severity="warning", bar_style="block"))
+
+console.print("✖ Error (92%): ", end="")
+console.print(Bar.percentage(92, severity="error", bar_style="block"))
+
+console.print("i Info (60%): ", end="")
+console.print(Bar.percentage(60, severity="info", bar_style="block"))
+
+time.sleep(1)
+
+console.print("\n[bold]Line vs Block style:[/bold]\n")
+
+console.print("Line style:  ", end="")
+console.print(Bar.percentage(65, width=40, bar_style="line"))
+
+console.print("Block style: ", end="")
+console.print(Bar.percentage(65, width=40, bar_style="block"))
+
+time.sleep(1)
+
+console.print("\n")
 console.print(Divider("Summary"))
 console.print()
 
@@ -227,6 +271,7 @@ console.print(
 
 stats = {
     "Total Styles": "6 (percentage, fraction, ratio, indeterminate, custom)",
+    "Bar Styles": "2 (line, block)",
     "Severities": "4 (success, warning, error, info)",
     "Width Range": "1-console width characters",
     "Use Cases": "Metrics, quotas, progress, ratings",
