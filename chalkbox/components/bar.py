@@ -2,9 +2,12 @@ from typing import Any, Literal
 
 from rich.bar import Bar as RichBar
 from rich.console import RenderableType
+from rich.progress_bar import ProgressBar as RichProgressBar
 
 from ..core.console import get_console
 from ..core.theme import get_theme
+
+BarStyle = Literal["block", "line"]
 
 
 class Bar:
@@ -43,12 +46,14 @@ class Bar:
         complete_style: str | None = None,
         finished_style: str | None = None,
         severity: Literal["success", "warning", "error", "info"] | None = None,
+        bar_style: BarStyle = "line",
     ):
         """Create a horizontal bar visualization."""
         self.completed = completed
         self.total = total
         self.width = width
         self.pulse = pulse
+        self.bar_style = bar_style
         self.console = get_console()
         self.theme = get_theme()
 
@@ -73,27 +78,36 @@ class Bar:
             self.complete_style = complete_style or self.theme.colors.primary
             self.finished_style = finished_style or complete_style or self.theme.colors.success
 
-        self.style = style or "default"
+        self.style = style or "grey23"
 
     def __rich__(self) -> RenderableType:
         """Render the bar as a Rich renderable."""
         try:
             # Check if bar is complete
             is_complete = self.total is not None and self.completed >= self.total
-
-            # Note: Rich Bar uses color/bgcolor, not style/complete_style
-            # Map our styles to Rich's Bar API
             bar_color = self.finished_style if is_complete else self.complete_style
-            bar_bgcolor = self.style
 
-            return RichBar(
-                size=self.total if self.total is not None else 100,
-                begin=0,
-                end=self.completed,
-                width=self.width,
-                color=bar_color,
-                bgcolor=bar_bgcolor,
-            )
+            if self.bar_style == "line":
+                # Use Rich ProgressBar (line characters: ━━━)
+                return RichProgressBar(
+                    total=self.total if self.total is not None else 100,
+                    completed=self.completed,
+                    width=self.width,
+                    pulse=self.pulse,
+                    style=self.style,
+                    complete_style=bar_color,
+                    finished_style=self.finished_style,
+                )
+            else:
+                # Use Rich Bar (block characters: ███)
+                return RichBar(
+                    size=self.total if self.total is not None else 100,
+                    begin=0,
+                    end=self.completed,
+                    width=self.width,
+                    color=bar_color,
+                    bgcolor=self.style,
+                )
         except Exception as e:
             # Return error text
             self.console.log(f"[yellow]Warning:[/yellow] Could not render bar: {e}")
@@ -112,15 +126,6 @@ class Bar:
         **kwargs: Any,
     ) -> "Bar":
         """Create a bar from a percentage (0-100).
-
-        Args:
-            percent: Percentage value (0-100)
-            width: Width of the bar
-            severity: Severity level for coloring
-            **kwargs: Additional Bar constructor arguments
-
-        Returns:
-            Bar instance representing the percentage
 
         Examples:
             >>> Bar.percentage(75.5, severity="success")
@@ -141,16 +146,6 @@ class Bar:
     ) -> "Bar":
         """Create a bar from a fraction.
 
-        Args:
-            numerator: Completed amount
-            denominator: Total amount
-            width: Width of the bar
-            severity: Severity level for coloring
-            **kwargs: Additional Bar constructor arguments
-
-        Returns:
-            Bar instance representing the fraction
-
         Examples:
             >>> Bar.fraction(3, 4, severity="success")  # 3/4 = 75%
             >>> Bar.fraction(512, 1024, severity="warning")  # 512MB/1GB = 50%
@@ -160,14 +155,6 @@ class Bar:
     @classmethod
     def indeterminate(cls, width: int | None = 40, pulse: bool = True, **kwargs: Any) -> "Bar":
         """Create an indeterminate (unknown total) bar with pulse animation.
-
-        Args:
-            width: Width of the bar
-            pulse: Whether to show pulse animation
-            **kwargs: Additional Bar constructor arguments
-
-        Returns:
-            Bar instance with indeterminate state
 
         Examples:
             >>> Bar.indeterminate()  # Pulsing bar
@@ -184,15 +171,6 @@ class Bar:
         **kwargs: Any,
     ) -> "Bar":
         """Create a bar from a ratio (0.0-1.0).
-
-        Args:
-            ratio: Ratio value (0.0 = 0%, 1.0 = 100%)
-            width: Width of the bar
-            severity: Severity level for coloring
-            **kwargs: Additional Bar constructor arguments
-
-        Returns:
-            Bar instance representing the ratio
 
         Examples:
             >>> Bar.from_ratio(0.75, severity="success")  # 75%

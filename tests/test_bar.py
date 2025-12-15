@@ -113,3 +113,45 @@ class TestBar:
         bar = Bar.percentage(60)
         # Should not raise
         bar.print()
+
+    def test_bar_style_default(self):
+        """Test default bar style is 'line'."""
+        bar = Bar(50, 100)
+        assert bar.bar_style == "line"
+
+    def test_bar_style_block(self):
+        """Test block bar style."""
+        bar = Bar(50, 100, bar_style="block")
+        assert bar.bar_style == "block"
+        renderable = bar.__rich__()
+        assert renderable is not None
+
+    def test_bar_style_line(self):
+        """Test explicit line bar style."""
+        bar = Bar(50, 100, bar_style="line")
+        assert bar.bar_style == "line"
+        renderable = bar.__rich__()
+        assert renderable is not None
+
+    def test_bar_percentage_with_block_style(self):
+        """Test percentage factory with block style."""
+        bar = Bar.percentage(75, bar_style="block")
+        assert bar.bar_style == "block"
+        assert bar.completed == 75
+
+    def test_bar_fraction_with_block_style(self):
+        """Test fraction factory with block style."""
+        bar = Bar.fraction(512, 1024, bar_style="block")
+        assert bar.bar_style == "block"
+
+    def test_bar_from_ratio_with_block_style(self):
+        """Test ratio factory with block style."""
+        bar = Bar.from_ratio(0.75, bar_style="block")
+        assert bar.bar_style == "block"
+
+    def test_bar_severity_with_block_style(self):
+        """Test severity styling with block style."""
+        bar = Bar.percentage(75, severity="warning", bar_style="block")
+        assert bar.bar_style == "block"
+        renderable = bar.__rich__()
+        assert renderable is not None

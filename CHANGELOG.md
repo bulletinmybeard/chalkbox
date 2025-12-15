@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.5] - 2025-12-15
+
+### Added
+
+- **Bar Component**: New `bar_style` parameter for visual style selection
+  - `"line"` (default) - Uses line characters (━━━) via Rich ProgressBar
+  - `"block"` - Uses block characters (███) via Rich Bar
+  - Works with all factory methods: `percentage()`, `fraction()`, `from_ratio()`, `indeterminate()`
+  - Compatible with all severity levels and custom styling
+
+  ```python
+  # Line style (default) - thin progress bar
+  Bar.percentage(75, bar_style="line")
+
+  # Block style - thicker solid bar
+  Bar.percentage(75, bar_style="block")
+
+  # With severity coloring
+  Bar.percentage(85, severity="warning", bar_style="block")
+  ```
+
 ## [2.2.0] - 2025-11-23
 
 ### Added
