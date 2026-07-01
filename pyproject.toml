@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chalkbox"
-version = "2.3.5"
+version = "2.4.0"
 description = "A batteries-included CLI UI kit on top of Rich"
 authors = [
     "Robin Schulz <bulletinmybeard@gmail.com>"
@@ -32,11 +32,10 @@ classifiers = [
 python = "^3.12"
 rich = "^14.2.0"
 toml = "^0.10.2"
-psutil = "^7.1.3"
 pydantic = "^2.12.4"
-pydantic-settings = "^2.12.0"
 
 [tool.poetry.group.dev.dependencies]
+psutil = "^7.1.3"
 pytest = "^7.4.0"
 mypy = "^1.7.0"
 ruff = "^0.1.9"
@@ -116,6 +115,7 @@ exclude = [
     "build/",
     "dist/",
     "demos/",
+    "tests/",
 ]
 
 [tool.mdformat]

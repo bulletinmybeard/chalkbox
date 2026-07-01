@@ -92,20 +92,44 @@ def demo_styling():
     # Orphaned severity (dimmed rows)
     console.print("[dim]Orphaned severity (dimmed for inactive/orphaned items):[/dim]")
     table_orphaned = Table(
-        title="Snapshots", headers=["ID", "Version", "Created", "Source", "Files"], row_styles="severity"
+        title="Snapshots",
+        headers=["ID", "Version", "Created", "Source", "Files"],
+        row_styles="severity",
     )
-    table_orphaned.add_row("2", "v1-4", "2025-11-23 03:14:33", "test-snapshot-project", "4", severity="success")
-    table_orphaned.add_row("1", "v1-3", "2025-11-23 03:12:22", "test-snapshot-project", "3", severity="success")
-    table_orphaned.add_row("(Orphaned)", "v1", "2025-11-23 00:38:48", "test", "0", severity="orphaned")
-    table_orphaned.add_row("(Orphaned)", "v1-2", "2025-11-23 00:38:38", "test-python-fallback", "3", severity="orphaned")
-    table_orphaned.add_row("(Orphaned)", "v1-1", "2025-11-22 23:57:52", "test-python-fallback", "3", severity="orphaned")
+    table_orphaned.add_row(
+        "2", "v1-4", "2025-11-23 03:14:33", "test-snapshot-project", "4", severity="success"
+    )
+    table_orphaned.add_row(
+        "1", "v1-3", "2025-11-23 03:12:22", "test-snapshot-project", "3", severity="success"
+    )
+    table_orphaned.add_row(
+        "(Orphaned)", "v1", "2025-11-23 00:38:48", "test", "0", severity="orphaned"
+    )
+    table_orphaned.add_row(
+        "(Orphaned)",
+        "v1-2",
+        "2025-11-23 00:38:38",
+        "test-python-fallback",
+        "3",
+        severity="orphaned",
+    )
+    table_orphaned.add_row(
+        "(Orphaned)",
+        "v1-1",
+        "2025-11-22 23:57:52",
+        "test-python-fallback",
+        "3",
+        severity="orphaned",
+    )
     console.print(table_orphaned)
     console.print()
 
     # Bold severities (important, active, urgent, highlighted)
     console.print("[dim]Bold severities (emphasized rows):[/dim]")
     table_bold = Table(
-        title="User Management", headers=["User", "Role", "Status", "Last Active"], row_styles="severity"
+        title="User Management",
+        headers=["User", "Role", "Status", "Last Active"],
+        row_styles="severity",
     )
     table_bold.add_row("admin", "Administrator", "Online", "2 min ago", severity="important")
     table_bold.add_row("john.doe", "Premium User", "Online", "5 min ago", severity="active")

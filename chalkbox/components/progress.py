@@ -26,6 +26,8 @@ class Progress:
         transient: bool = False,
         expand: bool = False,
         auto_refresh: bool = True,
+        *,
+        default_description: str | None = None,
     ):
         """Initialize progress bar."""
         self.console = console or get_console()
@@ -33,12 +35,12 @@ class Progress:
         self.transient = transient
         self.expand = expand
         self.auto_refresh = auto_refresh
+        self.default_description = default_description
         self._progress: RichProgress | None = None
+        self._started = False
 
-    def __enter__(self) -> "Progress":
-        """Start progress display."""
-        # Create progress with themed columns
-        self._progress = RichProgress(
+    def _build_default_progress(self) -> RichProgress:
+        return RichProgress(
             SpinnerColumn(style=self.theme.get_style("primary")),
             TextColumn("[progress.description]{task.description}"),
             BarColumn(
@@ -53,19 +55,29 @@ class Progress:
             expand=self.expand,
             auto_refresh=self.auto_refresh,
         )
-        self._progress.start()
+
+    def __enter__(self) -> "Progress":
+        """Start progress display."""
+        if self._progress is None:
+            self._progress = self._build_default_progress()
+
+        if not self._started:
+            self._progress.start()
+            self._started = True
+
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         """Stop progress display."""
-        if self._progress:
+        if self._progress and self._started:
             self._progress.stop()
+            self._started = False
 
     def add_task(self, description: str, total: float | None = None, **kwargs: Any) -> TaskID:
         """Add a new task to track."""
-        if self._progress:
-            return self._progress.add_task(description, total=total, **kwargs)
-        raise RuntimeError("Progress not started (use context manager)")
+        if not self._progress or not self._started:
+            raise RuntimeError("Progress not started (use context manager)")
+        return self._progress.add_task(description, total=total, **kwargs)
 
     def update(
         self,
@@ -78,25 +90,27 @@ class Progress:
         **kwargs: Any,
     ) -> None:
         """Update task progress."""
-        if self._progress:
-            self._progress.update(
-                task_id,
-                advance=advance,
-                completed=completed,
-                total=total,
-                description=description,
-                **kwargs,
-            )
+        if not self._progress or not self._started:
+            raise RuntimeError("Progress not started (use context manager)")
+        self._progress.update(
+            task_id,
+            advance=advance,
+            completed=completed,
+            total=total,
+            description=description,
+            **kwargs,
+        )
 
     def remove_task(self, task_id: TaskID) -> None:
         """Remove a task from display."""
-        if self._progress:
-            self._progress.remove_task(task_id)
+        if not self._progress or not self._started:
+            raise RuntimeError("Progress not started (use context manager)")
+        self._progress.remove_task(task_id)
 
     @classmethod
     def create_simple(cls, description: str = "Processing...") -> "Progress":
         """Create a simple single-task progress bar."""
-        return cls(transient=True)
+        return cls(transient=True, default_description=description)
 
     @classmethod
     def create_download(cls) -> "Progress":
@@ -104,7 +118,8 @@ class Progress:
         console = get_console()
         theme = get_theme()
 
-        progress = RichProgress(
+        wrapper = cls(console=console, transient=False)
+        wrapper._progress = RichProgress(
             TextColumn("[progress.description]{task.description}"),
             BarColumn(
                 complete_style=theme.get_style("success"),
@@ -116,8 +131,4 @@ class Progress:
             console=console,
             transient=False,
         )
-
-        # Wrap in our Progress class
-        wrapper = cls()
-        wrapper._progress = progress
         return wrapper

@@ -161,6 +161,24 @@ class TestDynamicProgress:
 
             assert task_id not in progress.tasks
 
+    def test_remove_task_from_completed(self):
+        """Test removing task from completed section."""
+        with DynamicProgress() as progress:
+            task_id = progress.add_task("Done task", total=100)
+            progress.update(task_id, completed=100)
+
+            progress.remove_task(task_id)
+
+            assert len(progress.completed_tasks) == 0
+
+    def test_total_zero_does_not_auto_complete(self):
+        """Test that total=0 is treated as indeterminate, not instantly complete."""
+        with DynamicProgress() as progress:
+            task_id = progress.add_task("Indeterminate", total=0)
+
+            assert task_id in progress.tasks
+            assert len(progress.completed_tasks) == 0
+
     def test_multiple_tasks_parallel_completion(self):
         """Test multiple tasks completing at different times."""
         with DynamicProgress() as progress:

@@ -4,6 +4,7 @@ import tempfile
 
 import toml
 
+import chalkbox.core.theme as theme_module
 from chalkbox.core.theme import ColorsConfig, SpacingConfig, Theme, get_theme, set_theme
 
 
@@ -196,8 +197,20 @@ class TestThemeIntegration:
         assert alert.theme.colors.success == "bright_green"
         assert alert.theme.glyphs.success == "✓ "
 
-    def test_theme_precedence(self):
-        """Test configuration precedence."""
-        # This would test: call-time > env > file > defaults
-        # But requires more complex setup with actual file system
-        pass
+    def test_theme_precedence(self, isolated_theme, monkeypatch, tmp_path):
+        """Test configuration precedence: file < env < set_theme."""
+        config_dir = tmp_path / ".chalkbox"
+        config_dir.mkdir()
+        (config_dir / "theme.toml").write_text('[colors]\nprimary = "blue"\n')
+
+        monkeypatch.setattr(theme_module.Path, "home", lambda: tmp_path)
+        monkeypatch.setenv("CHALKBOX_THEME_COLORS_PRIMARY", "magenta")
+
+        from chalkbox.core.theme import get_theme, reset_theme, set_theme
+
+        reset_theme()
+        file_and_env = get_theme()
+        assert file_and_env.colors.primary == "magenta"
+
+        set_theme(colors_primary="bright_red")
+        assert get_theme().colors.primary == "bright_red"

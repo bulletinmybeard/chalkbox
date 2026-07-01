@@ -448,11 +448,11 @@ Or programmatically in your code:
 ```python
 from chalkbox import set_theme
 
-# Set individual values
-set_theme({
-    "colors.primary": "magenta",
-    "colors.success": "bright_green",
-})
+# Set individual values (underscore format)
+set_theme(
+    colors_primary="magenta",
+    colors_success="bright_green",
+)
 
 # Or load a custom theme file
 from chalkbox.core.theme import Theme

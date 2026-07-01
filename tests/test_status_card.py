@@ -46,7 +46,7 @@ class TestStatusCard:
         assert error._get_status_glyph() == "✖"
 
         unknown = StatusCard(title="Test", status="unknown")
-        assert unknown._get_status_glyph() == "?"
+        assert unknown._get_status_glyph() == unknown.theme.glyphs.info
 
     def test_bar_severity_calculation(self):
         """Test bar severity calculation based on thresholds."""

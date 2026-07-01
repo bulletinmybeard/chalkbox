@@ -78,12 +78,12 @@ class StatusCard:
     def _get_status_glyph(self) -> str:
         """Get status indicator glyph based on status level."""
         glyphs = {
-            "healthy": "✓",
-            "warning": "⚠",
-            "error": "✖",
-            "unknown": "?",
+            "healthy": self.theme.glyphs.success,
+            "warning": self.theme.glyphs.warning,
+            "error": self.theme.glyphs.error,
+            "unknown": self.theme.glyphs.info,
         }
-        return glyphs.get(self.status, "?")
+        return glyphs.get(self.status, self.theme.glyphs.info)
 
     def _get_status_style(self) -> str:
         """Get style based on status level."""

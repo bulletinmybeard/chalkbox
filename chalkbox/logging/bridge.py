@@ -1,9 +1,11 @@
 import json
 import logging
 from pathlib import Path
+from threading import Lock
 from typing import Any
 
 from rich.logging import RichHandler
+from rich.text import Text
 
 from ..core.console import get_console
 from ..core.theme import get_theme
@@ -21,20 +23,28 @@ class ChalkBoxRichHandler(RichHandler):
         kwargs.setdefault("show_level", True)
         kwargs.setdefault("show_path", True)
 
+        self.theme = get_theme()
+
         super().__init__(console=console, **kwargs)
 
-        self.theme = get_theme()
-        self._setup_level_styles()
-
-    def _setup_level_styles(self) -> None:
-        """Setup level-specific styles."""
-        # NOTE: RichHandler's highlighter doesn't have a highlights attribute
-        # This is a no-op for now but kept for potential custom highlighting
-        pass
+    def get_level_text(self, record: logging.LogRecord) -> Text:
+        """Render log level with ChalkBox theme colors."""
+        level_name = record.levelname
+        style_map = {
+            "debug": self.theme.get_style("debug"),
+            "info": self.theme.get_style("info"),
+            "warning": self.theme.get_style("warning"),
+            "error": self.theme.get_style("error"),
+            "critical": self.theme.get_style("critical"),
+        }
+        style = style_map.get(level_name.lower(), self.theme.get_style("default"))
+        return Text.styled(level_name.ljust(8), style)
 
 
 class JSONFileHandler(logging.Handler):
     """Handler that writes JSON logs to a file for machine parsing."""
+
+    _file_lock = Lock()
 
     def __init__(self, filename: str, **kwargs: Any) -> None:
         """Initialize JSON file handler."""
@@ -63,7 +73,7 @@ class JSONFileHandler(logging.Handler):
 
                 log_entry["exception"] = traceback.format_exception(*record.exc_info)
 
-            with open(self.filename, "a") as f:
+            with self._file_lock, open(self.filename, "a") as f:
                 json.dump(log_entry, f)
                 f.write("\n")
         except Exception:
@@ -78,12 +88,14 @@ def setup_logging(
     show_level: bool = True,
     show_path: bool = True,
     rich_tracebacks: bool = True,
+    *,
+    replace_handlers: bool = True,
 ) -> logging.Logger:
     """Setup opinionated logging configuration."""
     root_logger = logging.getLogger()
 
-    # Clear existing handlers
-    root_logger.handlers.clear()
+    if replace_handlers:
+        root_logger.handlers.clear()
 
     log_level = getattr(logging, level.upper(), logging.INFO)
     root_logger.setLevel(log_level)
@@ -100,7 +112,6 @@ def setup_logging(
 
     root_logger.addHandler(rich_handler)
 
-    # Add JSON handler if requested
     if json_file:
         json_handler = JSONFileHandler(json_file)
         json_handler.setLevel(log_level)
@@ -150,3 +161,8 @@ class StructuredLogger:
     def error(self, message: str, **extra_data: Any) -> None:
         """Log error with extra data."""
         self.log("error", message, **extra_data)
+
+
+def get_structured_logger(name: str, level: str | None = None, **kwargs: Any) -> StructuredLogger:
+    """Get a structured logger with ChalkBox configuration."""
+    return StructuredLogger(get_logger(name, level=level, **kwargs))
