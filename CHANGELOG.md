@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-07-01
+
+### Fixed
+
+- **`__version__`**: Now synced with package metadata via `importlib.metadata`
+- **Theme loading**: `get_theme()` no longer overwrites `~/.chalkbox/theme.toml` values with defaults when applying env overrides
+- **`DynamicProgress`**: `total=0` no longer instantly completes tasks; `remove_task()` now removes completed tasks
+- **`Progress`**: `update()` and `remove_task()` raise `RuntimeError` when used outside context manager; `create_download()` starts correctly on `with`
+- **`Status.update()`**: Spinner changes now apply to the live Rich status display
+- **`Table.add_column()`**: Column `**kwargs` are forwarded to Rich
+- **`Bar`**: Fail-safe fallback returns a Rich `Text` renderable instead of a plain string
+- **`ChalkBoxRichHandler`**: Log level styles now use theme colors
+- **`setup_logging()`**: Added `replace_handlers=False` to avoid clearing existing app handlers
+- **CI**: Python matrix aligned to 3.12/3.13; workflow cache keys fixed
+
+### Changed
+
+- **`StatusCard`**: Status glyphs now read from `theme.glyphs`
+- **`Dashboard.set_header()`**: Panel border uses theme primary color
+- **Dependencies**: Moved `psutil` to dev dependencies (demo-only); removed unused `pydantic-settings`
+
+### Added
+
+- **`reset_theme()`**: Reset global theme singleton (for tests and reload scenarios)
+- **`StructuredLogger`** and **`get_structured_logger()`**: Exported from public API
+- **`reset_console`**: Exported from public API
+
 ## [2.3.5] - 2025-12-15
 
 ### Added

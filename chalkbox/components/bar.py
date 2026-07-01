@@ -3,6 +3,7 @@ from typing import Any, Literal
 from rich.bar import Bar as RichBar
 from rich.console import RenderableType
 from rich.progress_bar import ProgressBar as RichProgressBar
+from rich.text import Text
 
 from ..core.console import get_console
 from ..core.theme import get_theme
@@ -109,9 +110,11 @@ class Bar:
                     bgcolor=self.style,
                 )
         except Exception as e:
-            # Return error text
             self.console.log(f"[yellow]Warning:[/yellow] Could not render bar: {e}")
-            return f"[{self.completed}/{self.total or '?'}]"
+            return Text(
+                f"[{self.completed}/{self.total or '?'}]",
+                style=self.theme.get_style("warning"),
+            )
 
     def print(self) -> None:
         """Print the bar to console."""

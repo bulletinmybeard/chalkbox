@@ -99,10 +99,11 @@ class TestProgressExceptions:
             task_id = progress.add_task("Task 1", total=100)
             assert task_id is not None
 
-    def test_update_without_context_manager_does_not_raise(self):
-        """Test that update fails gracefully outside context manager."""
+    def test_update_without_context_manager_raises_runtimeerror(self):
+        """Test that update raises RuntimeError outside context manager."""
         progress = Progress()
-        progress.update(0, advance=10)
+        with pytest.raises(RuntimeError, match="Progress not started"):
+            progress.update(0, advance=10)
 
 
 class TestDynamicProgressExceptions:
@@ -136,8 +137,9 @@ class TestDynamicProgressExceptions:
 
     def test_update_without_context_manager_raises_runtimeerror(self):
         """Test that update raises RuntimeError when progress is not active."""
-        DynamicProgress()
-        pass
+        progress = DynamicProgress()
+        with pytest.raises(RuntimeError, match="Progress not started"):
+            progress.add_task("Task", total=100)
 
     def test_complete_task_moves_to_completed_section(self):
         """Test that completing a task moves it to completed section."""

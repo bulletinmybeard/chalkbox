@@ -53,6 +53,14 @@ jobs:
             echo "Git tag version: $TAG_VERSION"
             exit 1
           fi
+          poetry install --no-interaction
+          MODULE_VERSION=$(poetry run python -c "import chalkbox; print(chalkbox.__version__)")
+          if [ "$MODULE_VERSION" != "$TAG_VERSION" ]; then
+            echo "ERROR: chalkbox.__version__ mismatch!"
+            echo "chalkbox.__version__: $MODULE_VERSION"
+            echo "Git tag version: $TAG_VERSION"
+            exit 1
+          fi
           echo "Version verified: $PYPROJECT_VERSION"
 
       - name: Build package

@@ -31,6 +31,13 @@ class TestProgress:
         """Test simple progress factory."""
         progress = Progress.create_simple("Processing...")
         assert progress.transient is True
+        assert progress.default_description == "Processing..."
+
+    def test_progress_update_without_context_raises(self):
+        """Test that update raises RuntimeError outside context manager."""
+        progress = Progress()
+        with pytest.raises(RuntimeError, match="Progress not started"):
+            progress.update(0, advance=1)
 
     def test_progress_create_download(self):
         """Test download progress factory."""

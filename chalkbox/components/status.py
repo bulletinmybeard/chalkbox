@@ -62,15 +62,24 @@ class Status:
     ) -> None:
         """Update status display."""
         if self._status:
-            if message is not None:
-                self._status.update(status=message)
             if spinner is not None:
-                # Update spinner name only - Rich Status handles the spinner internally
                 self.spinner_name = spinner
-                if spinner_style is not None:
-                    self.custom_spinner_style = spinner_style
+            if spinner_style is not None:
+                self.custom_spinner_style = spinner_style
+
+            update_kwargs: dict[str, Any] = {}
+            if message is not None:
+                update_kwargs["status"] = message
+            if spinner is not None:
+                update_kwargs["spinner"] = spinner
+                update_kwargs["spinner_style"] = (
+                    spinner_style or self.custom_spinner_style or self.theme.get_style("primary")
+                )
             if speed is not None:
-                self._status.update(speed=speed)
+                update_kwargs["speed"] = speed
+
+            if update_kwargs:
+                self._status.update(**update_kwargs)
 
     def stop(self) -> None:
         """Stop the status display."""

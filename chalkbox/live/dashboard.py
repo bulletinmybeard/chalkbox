@@ -7,6 +7,7 @@ from rich.panel import Panel
 from rich.text import Text
 
 from ..core.console import get_console
+from ..core.theme import get_theme
 from .wrapper import LiveComponent
 
 DashboardLayout = Literal["default", "sidebar_left", "sidebar_right", "header_footer", "full"]
@@ -61,7 +62,7 @@ class Dashboard:
     ) -> None:
         """Set header content."""
         if isinstance(content, str):
-            content = Panel(content, border_style="cyan")
+            content = Panel(content, border_style=get_theme().get_style("primary"))
 
         self.sections["header"].content = content
 

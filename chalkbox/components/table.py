@@ -25,6 +25,7 @@ class Table:
         """Create a table."""
         self.title = title
         self.headers = headers or []
+        self._column_options: list[dict[str, Any]] = [{} for _ in self.headers]
         self.show_header = show_header
         self.show_lines = show_lines
         self.row_styles = row_styles
@@ -39,6 +40,7 @@ class Table:
     def add_column(self, header: str, **kwargs: Any) -> None:
         """Add a column to the table."""
         self.headers.append(header)
+        self._column_options.append(kwargs)
 
     def add_row(self, *values: Any, severity: str | None = None) -> None:
         """Add a row to the table."""
@@ -138,17 +140,19 @@ class Table:
             )
 
         # Add columns - let Rich handle everything
-        for header in self.headers:
-            # Only set overflow if not default
+        for index, header in enumerate(self.headers):
             col_kwargs: dict[str, Any] = {}
-            if self.truncation != "ellipsis":
+            if index < len(self._column_options):
+                col_kwargs.update(self._column_options[index])
+
+            if self.truncation != "ellipsis" and "overflow" not in col_kwargs:
                 overflow = {
                     "wrap": "fold",
                     "clip": "crop",
                 }.get(self.truncation, "ellipsis")
                 col_kwargs["overflow"] = overflow
 
-            if self.max_width:
+            if self.max_width and "max_width" not in col_kwargs:
                 col_kwargs["max_width"] = self.max_width
 
             table.add_column(header, **col_kwargs)

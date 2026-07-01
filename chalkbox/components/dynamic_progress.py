@@ -125,7 +125,8 @@ class DynamicProgress:
 
             # Build the line with proper styling
             line = Text(no_wrap=True, overflow="ignore")
-            line.append("⠋", style=self.theme.get_style("primary"))
+            spinner_glyph = self.theme.glyphs.running or self.theme.glyphs.spinner[0]
+            line.append(spinner_glyph, style=self.theme.get_style("primary"))
             line.append(f" {description} ", style="default")
 
             # Bar color: green if completed, primary if active
@@ -136,8 +137,8 @@ class DynamicProgress:
             )
             line.append(bar_str, style=bar_style)
 
-            line.append(f" {count_str}", style="green")
-            line.append(f" {time_str}", style="yellow")
+            line.append(f" {count_str}", style=self.theme.get_style("success"))
+            line.append(f" {time_str}", style=self.theme.get_style("warning"))
 
             lines.append(line)
 
@@ -172,6 +173,7 @@ class DynamicProgress:
         self._next_id += 1
 
         self.tasks[task_id] = {
+            "task_id": task_id,
             "description": description,
             "total": total,
             "completed": 0.0,
@@ -211,8 +213,8 @@ class DynamicProgress:
         if description is not None:
             task_data["description"] = description
 
-        # Check if task is finished
-        if task_data["completed"] >= task_data["total"]:
+        # Check if task is finished (total=0 is indeterminate, not instantly complete)
+        if task_data["total"] > 0 and task_data["completed"] >= task_data["total"]:
             self._move_to_completed(task_id)
 
         if self._live:
